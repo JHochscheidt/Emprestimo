@@ -6,7 +6,6 @@
 	<version>1.0</version>
 	<packaging>war</packaging>
 
-
 	<!-- Codificação dos caracteres -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,6 +30,35 @@
 			</plugin>
 		</plugins>
 	</build>
+
+
+	<!-- Dependências -->
+	<dependencies>
+		<!-- Hibernate Core -->
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.2.12.Final</version>
+		</dependency>
+		<!-- MySQL connector -->
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.8-dmr</version>
+		</dependency>
+		<!-- JUnit -->
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+
+	</dependencies>
 
 
 </project>
