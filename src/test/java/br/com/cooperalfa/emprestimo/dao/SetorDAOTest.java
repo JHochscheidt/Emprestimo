@@ -17,35 +17,27 @@ public class SetorDAOTest {
 		SetorDAO setorDAO = new SetorDAO();
 		
 		setor.setNome("administrativo");
-		setor.setDescricao("Setor administrativo");
 		setorDAO.salvar(setor);
 		
 		setor.setNome("financeiro");
-		setor.setDescricao("Setor financeiro");
 		setorDAO.salvar(setor);
 		
 		setor.setNome("recursos humanos");
-		setor.setDescricao("Setor de Recursos Humanos");
 		setorDAO.salvar(setor);
 		
 		setor.setNome("juridico");
-		setor.setDescricao("Setor Juridico");
 		setorDAO.salvar(setor);
 		
 		setor.setNome("tecnologia");
-		setor.setDescricao("Setor de Tecnologia");
 		setorDAO.salvar(setor);
 		
 		setor.setNome("Externo");
-		setor.setDescricao("Setor Externo");
 		setorDAO.salvar(setor);
 		
 		setor.setNome("Comercial");
-		setor.setDescricao("Setor Comercial");
 		setorDAO.salvar(setor);
 		
 		setor.setNome("Operacional");
-		setor.setDescricao("Setor Operacional");
 		setorDAO.salvar(setor);
 	
 	}
@@ -59,7 +51,7 @@ public class SetorDAOTest {
 		System.out.println("quantidade de registros encontrados " + resultado.size());
 		
 		for(Setor setor : resultado) {
-			System.out.println(setor.getNome() + " - " + setor.getDescricao());
+			System.out.println(setor.getNome());
 		}
 	}
 	
@@ -71,7 +63,7 @@ public class SetorDAOTest {
 		Setor setor = setorDAO.buscar(codigo);
 		
 		if(setor == null ) System.out.println("Nenhum registro encontrado");
-		else System.out.println(setor.getNome() + " - " + setor.getDescricao());
+		else System.out.println(setor.getNome());
 	}
 	
 	@Test
@@ -83,7 +75,7 @@ public class SetorDAOTest {
 		if(setor == null) System.out.println("Setor não existe");
 		else {
 			setorDAO.excluir(setor);
-			System.out.println("Setor removido: " + setor.getCodigo() + " - " + setor.getNome() + " - " + setor.getDescricao());
+			System.out.println("Setor removido: " + setor.getCodigo());
 		}
 	}
 
@@ -96,9 +88,25 @@ public class SetorDAOTest {
 		
 		if(setor == null) System.out.println("Setor não existe");
 		else {
-			setor.setDescricao("Setor Operacional");
+			setor.setNome("Teste");
 			setorDAO.editar(setor);
 		}
+		
+	}
+	
+	@Test
+//	@Ignore
+	public void merge() {
+//		Setor setor = new Setor();
+//		SetorDAO setorDAO = new SetorDAO();
+//		setor.setNome("administrativo teste");
+//		setorDAO.merge(setor);
+		
+		SetorDAO setorDAO = new SetorDAO();
+		Setor setor = setorDAO.buscar(9L);
+		setor.setNome("teste");
+		setorDAO.merge(setor);
+		
 		
 	}
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Empréstimos</title>
+</h:head>
+<h:body>
+	<h:form>
+		<p:panel header="Empréstimos - Listagem">
+			<p:dataTable emptyMessage="Nenhum regisro encontrado."
+				paginator="true">
+				<f:facet name="header">
+					<p:commandButton value="Novo"
+						oncomplete="PF('dialogoEmpréstimo').show()" />
+				</f:facet>
+				<p:column headerText="Id"></p:column>
+				<p:column headerText="Nome"></p:column>
+				<p:column headerText="CPF"></p:column>
+				<p:column headerText="Setor"></p:column>
+				<p:column headerText="Cargo"></p:column>
+				<p:column headerText="Data Admissão"></p:column>
+				<p:column headerText="Opções"></p:column>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+
+	<p:dialog header="Empréstimo - Cadastro" widgetVar="dialogoEmpréstimo"
+		draggable="false" resizable="false" modal="true" closable="false">
+		<h:form>
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Nome" />
+				<p:inputText size="50" maxlength="50" />
+				
+				<p:outputLabel value="CPF" />
+				<p:inputText size="14" maxlength="14"/>
+
+				<p:outputLabel value="Setor" />
+				<p:selectOneMenu>
+					<f:selectItem itemValue="" itemLabel="Selecione um setor"></f:selectItem>
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Cargo" />
+				<p:selectOneMenu>
+					<f:selectItem itemValue="" itemLabel="Selecione um cargo"></f:selectItem>
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Valor empréstimo" />
+				<p:inputText type="number" size="10" maxlength="9"/>
+				
+				<p:outputLabel  value="Quantidade de parcelas" />
+				<p:inputText type="number" size="3" maxlength="2"/>
+				
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Salvar" />
+				<p:commandButton value="Fechar" oncomplete="PF('dialogoEmpréstimo').hide()" />
+			</h:panelGrid>
+		</h:form>
+
+	</p:dialog>
+
+
+
+
+</h:body>
+</html>

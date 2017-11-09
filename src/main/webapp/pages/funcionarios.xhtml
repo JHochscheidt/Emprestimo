@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Funcionários</title>
+</h:head>
+<h:body>
+	<h:form>
+		<p:panel header="Funcionários - Listagem">
+			<p:dataTable emptyMessage="Nenhum registro encontrado."
+				paginator="true">
+				<f:facet name="header">
+					<p:commandButton value="Novo"
+						oncomplete="PF('dialogoFuncionario').show()" />
+				</f:facet>
+				<p:column headerText="Id"></p:column>
+				<p:column headerText="Nome"></p:column>
+				<p:column headerText="CPF"></p:column>
+				<p:column headerText="Setor"></p:column>
+				<p:column headerText="Cargo"></p:column>
+				<p:column headerText="Data Admissão"></p:column>
+				<p:column headerText="Opções">
+					<p:commandButton icon="ui-icon-trash">
+						<p:confirm header="Confirmação"
+							message="Deseja excluir funcionário" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</p:panel>
+	</h:form>
+
+	<p:dialog header="Funcionário - Cadastro"
+		widgetVar="dialogoFuncionario" draggable="false" resizable="false"
+		modal="true" closable="false">
+		<h:form>
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Nome" />
+				<p:inputText size="50" maxlength="50" />
+
+				<p:outputLabel value="CPF" />
+				<p:inputMask id="cpfId" value=" " mask="999.999.999-99" />
+
+				<p:outputLabel value="Setor" />
+				<p:selectOneMenu>
+					<f:selectItem itemValue="" itemLabel="Selecione um setor..."></f:selectItem>
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Cargo" />
+				<p:selectOneMenu>
+					<f:selectItem itemValue="" itemLabel="Selecione um cargo..."></f:selectItem>
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Data de Admissão" />
+				<p:calendar />
+
+				<p:outputLabel value="Ativo" />
+				<p:selectBooleanCheckbox />
+
+
+				<p:outputLabel value="Senha" />
+				<p:password maxlength="8" size="10" />
+
+				<p:outputLabel value="Tipo" />
+				<p:selectOneRadio>
+					<f:selectItem itemValue="1" itemLabel="Tipo 1" />
+					<f:selectItem itemValue="2" itemLabel="Tipo 2" />
+					<f:selectItem itemValue="3" itemLabel="Tipo 3" />
+				</p:selectOneRadio>
+
+
+
+
+				<p:outputLabel value="Observação" />
+				<p:inputTextarea rows="5" cols="50" />
+
+
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Salvar" />
+				<p:commandButton value="Fechar"
+					oncomplete="PF('dialogoFuncionario').hide()" />
+			</h:panelGrid>
+		</h:form>
+
+	</p:dialog>
+
+
+
+
+</h:body>
+</html>

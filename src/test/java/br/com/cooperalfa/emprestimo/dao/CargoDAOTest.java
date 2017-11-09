@@ -22,7 +22,6 @@ public class CargoDAOTest {
 			CargoDAO cargoDao = new CargoDAO();
 			Cargo cargo = new Cargo();
 			cargo.setNome("Programador");
-			cargo.setDescricao("Cargo Programador");
 			cargo.setSetor(setor);
 
 			cargoDao.salvar(cargo);
@@ -37,7 +36,8 @@ public class CargoDAOTest {
 		List<Cargo> resultado = cargoDAO.listar();
 
 		for (Cargo cargo : resultado) {
-			System.out.println(cargo.getCodigo() + " - " + cargo.getNome() + " - " + cargo.getDescricao() + " - "
+			System.out.println(cargo.getCodigo() + " - " 
+					+ cargo.getNome() + " - " 
 					+ cargo.getSetor().getNome());
 		}
 
@@ -53,7 +53,8 @@ public class CargoDAOTest {
 		if (cargo == null)
 			System.out.println("Cargo não existe!!!");
 		else {
-			System.out.println(cargo.getCodigo() + " - " + cargo.getNome() + " - " + cargo.getDescricao() + " - "
+			System.out.println(cargo.getCodigo() + " - " 
+					+ cargo.getNome() + " - " 
 					+ cargo.getSetor().getNome());
 		}
 	}
@@ -70,7 +71,8 @@ public class CargoDAOTest {
 		else {
 			cargoDAO.excluir(cargo);
 			System.out.println("Cargo excluído : ");
-			System.out.println(cargo.getCodigo() + " - " + cargo.getNome() + " - " + cargo.getDescricao() + " - "
+			System.out.println(cargo.getCodigo() + " - " 
+					+ cargo.getNome() + " - "
 					+ cargo.getSetor().getNome());
 		}
 	}
@@ -86,7 +88,6 @@ public class CargoDAOTest {
 			System.out.println("Cargo não existe! Impossível alterá-lo!!!");
 		else {
 			cargo.setNome("Programador Junior");
-			cargo.setDescricao("Cargo programador junior");
 			cargoDAO.editar(cargo);
 		}
 

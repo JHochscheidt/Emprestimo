@@ -63,10 +63,40 @@
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.faces</artifactId>
-			<version>2.3.2</version>
+			<version>2.2.15</version>
 		</dependency>
 
-		
+
+		<!-- PrimeFaces -->
+		<!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>6.1</version>
+		</dependency>
+
+		<!-- CDI -->
+
+		<dependency>
+			<groupId>org.jboss.weld.servlet</groupId>
+			<artifactId>weld-servlet</artifactId>
+			<version>2.2.1.Final</version>
+		</dependency>
+
+
+		<!-- OmniFaces -->
+		<!-- https://mvnrepository.com/artifact/org.omnifaces/omnifaces -->
+		<dependency>
+			<groupId>org.omnifaces</groupId>
+			<artifactId>omnifaces</artifactId>
+			<version>2.6.5</version>
+		</dependency>
+
+
+
+
+
+
 
 
 	</dependencies>
