@@ -38,6 +38,7 @@ public class SetorBean implements Serializable {
 	public void salvar() {
 		try {
 			SetorDAO setorDAO = new SetorDAO();
+			setor.setNome(setor.getNome().toUpperCase());
 			setorDAO.merge(setor);
 			
 			novo();
@@ -53,7 +54,7 @@ public class SetorBean implements Serializable {
 
 	public void excluir(ActionEvent evento) {
 		try {
-			setor = (Setor) evento.getComponent().getAttributes().get("setorSelecionadoExclusao");
+			setor = (Setor) evento.getComponent().getAttributes().get("setorSelecionado");
 			
 			SetorDAO setorDAO = new SetorDAO();
 			setorDAO.excluir(setor);
@@ -65,8 +66,6 @@ public class SetorBean implements Serializable {
 			Messages.addGlobalError("Erro ao remover setor!");
 			e.printStackTrace();
 		}
-		
-		
 	}
 	
 	public void editar(ActionEvent evento) {

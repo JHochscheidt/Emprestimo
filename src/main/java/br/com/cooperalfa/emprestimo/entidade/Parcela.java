@@ -1,7 +1,7 @@
 package br.com.cooperalfa.emprestimo.entidade;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +19,7 @@ public class Parcela extends GenericDomain{
 	
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
-	private Calendar dataVencimento;
+	private Date dataVencimento;
 	
 	@Column(nullable = false, precision = 8, scale = 2)
 	private BigDecimal valor;

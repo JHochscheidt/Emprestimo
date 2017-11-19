@@ -1,11 +1,12 @@
 package br.com.cooperalfa.emprestimo.entidade;
 
-import java.util.Calendar;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -17,19 +18,19 @@ public class Funcionario extends GenericDomain {
 	private String nome;
 	
 	@Column(nullable = false)
-	private Integer cpf;
+	private String cpf;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Setor setor;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Cargo cargo;
 	
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
-	private Calendar dataAdmissao;
+	private Date dataAdmissao;
 	
 	@Column(nullable = false)
 	private String observacao;
@@ -42,11 +43,11 @@ public class Funcionario extends GenericDomain {
 		this.nome = nome;
 	}
 
-	public Integer getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(Integer cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 
@@ -66,11 +67,11 @@ public class Funcionario extends GenericDomain {
 		this.cargo = cargo;
 	}
 
-	public Calendar getDataAdmissao() {
+	public Date getDataAdmissao() {
 		return dataAdmissao;
 	}
 
-	public void setDataAdmissao(Calendar dataAdmissao) {
+	public void setDataAdmissao(Date dataAdmissao) {
 		this.dataAdmissao = dataAdmissao;
 	}
 

@@ -1,9 +1,11 @@
 package br.com.cooperalfa.emprestimo.dao;
 
+
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
 
 import br.com.cooperalfa.emprestimo.entidade.Cargo;
 import br.com.cooperalfa.emprestimo.entidade.Setor;
@@ -14,7 +16,7 @@ public class CargoDAOTest {
 	@Ignore
 	public void salvar() {
 		SetorDAO setorDAO = new SetorDAO();
-		Setor setor = setorDAO.buscar(1L);
+		Setor setor = setorDAO.buscar(4L);
 
 		if (setor == null)
 			System.out.println("Setor não existe! Impossível adicionar Cargo!!!");
@@ -28,7 +30,7 @@ public class CargoDAOTest {
 
 		}
 	}
-
+	
 	@Test
 	@Ignore
 	public void listar() {
@@ -56,6 +58,24 @@ public class CargoDAOTest {
 			System.out.println(cargo.getCodigo() + " - " 
 					+ cargo.getNome() + " - " 
 					+ cargo.getSetor().getNome());
+		}
+	}
+	
+	@Test
+//	@Ignore
+	public void buscarPorSetor() {
+		Long codigoSetor = 4L;
+		CargoDAO cargoDAO = new CargoDAO();
+		List<Cargo> cargos = cargoDAO.buscarPorSetor(codigoSetor);
+
+		if (cargos == null)
+			System.out.println("Cargo não existe!!!");
+		else {
+			for(Cargo cargo : cargos) {
+				System.out.println(cargo.getCodigo() + " - " 
+					+ cargo.getNome() + " - " 
+					+ cargo.getSetor().getNome());
+			}
 		}
 	}
 

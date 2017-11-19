@@ -1,8 +1,5 @@
 package br.com.cooperalfa.emprestimo.dao;
 
-import java.util.List;
-
-
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -10,24 +7,23 @@ import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 
-import br.com.cooperalfa.emprestimo.entidade.Cargo;
+import br.com.cooperalfa.emprestimo.entidade.Funcionario;
 import br.com.cooperalfa.emprestimo.util.HibernateUtil;
 
-public class CargoDAO extends GenericDAO<Cargo> {
-
-	public List<Cargo> buscarPorSetor(Long codigoSetor) {
+public class FuncionarioDAO extends GenericDAO<Funcionario>{
+	
+	public Funcionario buscarPorCpf(String cpf) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
 			CriteriaBuilder builder = sessao.getCriteriaBuilder();
-		    CriteriaQuery<Cargo> query = builder.createQuery(Cargo.class);
-		    Root<Cargo> u = query.from(Cargo.class);
+		    CriteriaQuery<Funcionario> query = builder.createQuery(Funcionario.class);
+		    Root<Funcionario> u = query.from(Funcionario.class);
 		    query.select(u);
-		    query.where(builder.equal(u.get("setor"), codigoSetor));
-		    query.orderBy(builder.asc(u.get("nome")));
+		    query.where(builder.equal(u.get("cpf"), cpf));
 		    
-		    TypedQuery<Cargo> typedQuery = sessao.createQuery(query);
-		    List<Cargo> cargos = typedQuery.getResultList();
-		    return cargos;
+		    TypedQuery<Funcionario> typedQuery = sessao.createQuery(query);
+		    Funcionario funcionario = typedQuery.getSingleResult();
+		    return funcionario;
 		} catch (RuntimeException e) {
 			throw e;
 		} finally {

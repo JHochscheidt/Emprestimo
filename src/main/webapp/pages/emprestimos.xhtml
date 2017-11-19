@@ -9,55 +9,115 @@
 	<title>Empréstimos</title>
 </h:head>
 <h:body>
-	<h:form>
+	<p:growl id="mensagem" />
+	<h:form id="formListEmprestimos">
 		<p:panel header="Empréstimos - Listagem">
-			<p:dataTable emptyMessage="Nenhum regisro encontrado."
-				paginator="true">
+			<p:dataTable id="tabelaListEmprestimos"
+				emptyMessage="Nenhum registro encontrado." paginator="true"
+				value="#{emprestimoBean.emprestimos}" var="emprestimo" rows="5">
 				<f:facet name="header">
 					<p:commandButton value="Novo"
-						oncomplete="PF('dialogoEmpréstimo').show()" />
+						actionListener="#{emprestimoBean.novo}"
+						oncomplete="PF('dialogoEmprestimo').show()"
+						update=":mensagem :formCadastroEmprestimo:painelCadastroEmprestimo">
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
 				</f:facet>
-				<p:column headerText="Id"></p:column>
-				<p:column headerText="Nome"></p:column>
-				<p:column headerText="CPF"></p:column>
-				<p:column headerText="Setor"></p:column>
-				<p:column headerText="Cargo"></p:column>
-				<p:column headerText="Data Admissão"></p:column>
+				<p:column headerText="Id">
+					<h:outputText value="#{emprestimo.codigo}" />
+				</p:column>
+				<p:column headerText="Data da Operação">
+					<h:outputText value="#{emprestimo.dataOperacao}" >
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Funcionário">
+					<h:outputText value="#{emprestimo.funcionario.nome}" />
+				</p:column>
+
+				<p:column headerText="Valor Empréstimo">
+					<h:outputText value="#{emprestimo.valor}" />
+				</p:column>
+
+				<p:column headerText="Quantidade Parcelas">
+					<h:outputText
+						value="#{emprestimo.quantidadeParcelas}" />
+				</p:column>
+
+				<p:column headerText="Data Primeira Parcela">
+					<h:outputText value="#{emprestimo.primeiraParcela}" >
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+
 				<p:column headerText="Opções"></p:column>
 			</p:dataTable>
 		</p:panel>
 	</h:form>
 
-	<p:dialog header="Empréstimo - Cadastro" widgetVar="dialogoEmpréstimo"
+	<p:dialog header="Empréstimo - Cadastro" widgetVar="dialogoEmprestimo"
 		draggable="false" resizable="false" modal="true" closable="false">
-		<h:form>
-			<h:panelGrid columns="2">
-				<p:outputLabel value="Nome" />
-				<p:inputText size="50" maxlength="50" />
-				
-				<p:outputLabel value="CPF" />
-				<p:inputText size="14" maxlength="14"/>
+		<h:form id="formCadastroEmprestimo">
+			<h:panelGrid id="painelCadastroEmprestimo" columns="2">
 
-				<p:outputLabel value="Setor" />
-				<p:selectOneMenu>
-					<f:selectItem itemValue="" itemLabel="Selecione um setor"></f:selectItem>
+				<p:outputLabel for="dataEmprestimo" value="Data da Operação:" />
+				<p:calendar id="dataEmprestimo"
+					value="#{emprestimoBean.emprestimo.dataOperacao}" size="10"
+					locale="pt_BR" pattern="dd/MM/yyyy" mask="99/99/9999"
+					disabled="true" />
+
+				<p:outputLabel for="nomeFuncionarioEmprestimo" value="Funcionário" />
+				<p:selectOneMenu id="nomeFuncionarioEmprestimo" filter="true"
+					value="#{emprestimoBean.emprestimo.funcionario}"
+					converter="omnifaces.SelectItemsConverter" required="true"
+					requiredMessage="Funcionário é obrigatório">
+
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione um funcionário..." />
+					<f:selectItems value="#{emprestimoBean.funcionarios}"
+						var="funcionario" itemValue="#{funcionario}"
+						itemLabel="#{funcionario.nome}" />
+						
+				</p:selectOneMenu>
+
+				<p:outputLabel for="valorEmprestimo" value="Valor Empréstimo:" />
+				<p:inputNumber id="valorEmprestimo"
+					value="#{emprestimoBean.emprestimo.valor}" symbol="R$ "
+					 decimalSeparator="," thousandSeparator="." maxValue="999999999.99"
+					 required="true" requiredMessage="Valor do empréstimo é obrigatório"/>
+				
+
+				<p:outputLabel for="quantidadeParcelasEmprestimo" value="Quantidade Parcelas" />
+				<p:selectOneMenu id="quantidadeParcelasEmprestimo" filter="true"
+					value="#{emprestimoBean.emprestimo.quantidadeParcelas}"
+					converter="omnifaces.SelectItemsConverter" required="true"
+					requiredMessage="Quantidade de parcelas é obrigatório">
+
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione a quantidade de parcelas..." />
+					<f:selectItems value="#{emprestimoBean.quantidadeDeParcelas}"
+						var="quantidadeDeParcelas" itemValue="#{quantidadeDeParcelas}"
+						itemLabel="#{quantidadeDeParcelas}" />
 				</p:selectOneMenu>
 				
-				<p:outputLabel value="Cargo" />
-				<p:selectOneMenu>
-					<f:selectItem itemValue="" itemLabel="Selecione um cargo"></f:selectItem>
-				</p:selectOneMenu>
 				
-				<p:outputLabel value="Valor empréstimo" />
-				<p:inputText type="number" size="10" maxlength="9"/>
+				<p:outputLabel for="dataPrimeiraParcela" value="Data Primeira Parcela:" />
+				<p:calendar id="dataPrimeiraParcela"
+					value="#{emprestimoBean.emprestimo.primeiraParcela}" size="10"
+					locale="pt_BR" pattern="dd/MM/yyyy" mask="99/99/9999"
+					mindate="#{emprestimoBean.emprestimo.dataOperacao}"/>
 				
-				<p:outputLabel  value="Quantidade de parcelas" />
-				<p:inputText type="number" size="3" maxlength="2"/>
-				
+
 			</h:panelGrid>
 			<h:panelGrid columns="2">
-				<p:commandButton value="Salvar" />
-				<p:commandButton value="Fechar" oncomplete="PF('dialogoEmpréstimo').hide()" />
+				<p:commandButton value="Salvar" 
+				actionListener="#{emprestimoBean.salvar}"
+					update=":mensagem :formCadastroEmprestimo:painelCadastroEmprestimo :formListEmprestimos:tabelaListEmprestimos"/>
+				<p:commandButton value="Fechar"
+					oncomplete="PF('dialogoEmprestimo').hide()" />
 			</h:panelGrid>
 		</h:form>
 

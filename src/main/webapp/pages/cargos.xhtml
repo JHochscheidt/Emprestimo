@@ -9,37 +9,88 @@
 	<title>Cargos</title>
 </h:head>
 <h:body>
-	<h:form>
+	<p:growl id="mensagem" />
+	<h:form id="formListCargos">
 		<p:panel header="Cargos - Listagem">
-			<p:dataTable emptyMessage="Nenhum regisro encontrado."
-				paginator="true">
+			<p:dataTable id="tabelaListCargos"
+				emptyMessage="Nenhum registro encontrado." paginator="true" rows="5"
+				value="#{cargoBean.cargos}" var="cargo">
 				<f:facet name="header">
 					<p:commandButton value="Novo"
-						oncomplete="PF('dialogoCargo').show()" />
+					oncomplete="PF('dialogoCargo').show()"
+					actionListener="#{cargoBean.novo}"
+					update=":mensagem :formCadastroCargo:painelCadastroCargo" >
+						<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
 				</f:facet>
-				<p:column headerText="Código"></p:column>
-				<p:column headerText="Nome"></p:column>
-				<p:column headerText="Setor"></p:column>
-				<p:column headerText="Opções"></p:column>
+				
+				<p:column headerText="Código" sortBy="#{cargo.codigo}"
+					filterBy="#{cargo.codigo}">
+					<h:outputText value="#{cargo.codigo}" />
+				</p:column>
+				
+				<p:column headerText="Nome" sortBy="#{cargo.nome}"
+					filterBy="#{cargo.nome}">
+					<h:outputText value="#{cargo.nome}" />
+				</p:column>
+				<p:column headerText="Setor" sortBy="#{cargo.setor.nome}"
+					filterBy="#{cargo.setor.nome}">
+					<h:outputText value="#{cargo.setor.nome}" />
+				</p:column>
+				<p:column headerText="Opções">
+				
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{cargoBean.excluir}"
+						update=":mensagem :formListCargos:tabelaListCargos">
+						<p:confirm header="Confirmação"
+							message="Deseja excluir cargo?" icon="ui-icon-alert" />
+						<f:attribute name="cargoSelecionado" value="#{cargo}" />
+					</p:commandButton>
+					
+					<p:commandButton icon="ui-icon-pencil" 
+					actionListener="#{cargoBean.editar}" oncomplete="PF('dialogoCargo').show()" 
+					update=":mensagem :formCadastroCargo:painelCadastroCargo">
+						<f:attribute name="cargoSelecionado" value="#{cargo}" />
+						<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+				</p:column>
 			</p:dataTable>
+			
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+			
 		</p:panel>
 	</h:form>
 
 	<p:dialog header="Cargo - Cadastro" widgetVar="dialogoCargo"
 		draggable="false" resizable="false" modal="true" closable="false">
-		<h:form>
-			<h:panelGrid columns="2">
-				<p:outputLabel value="Nome" />
-				<p:inputText size="50" maxlength="50" />
 
-				<p:outputLabel value="Setor" />
-				<p:selectOneMenu filter="true">
-					<f:selectItem itemValue="" itemLabel="Selecione um setor"/>
+		<h:form id="formCadastroCargo">
+			<h:panelGrid id="painelCadastroCargo" columns="2">
+				<p:outputLabel for="nomeCargo" value="Nome:" />
+				<p:inputText id="nomeCargo" size="50" maxlength="60" required="true" requiredMessage="Nome é obrigatório"
+					value="#{cargoBean.cargo.nome}" />
+
+				<p:outputLabel for="nomeSetor" value="Setor:" />
+				<p:selectOneMenu id="nomeSetor" filter="true" value="#{cargoBean.cargo.setor}"
+					converter="omnifaces.SelectItemsConverter" 
+					required="true" requiredMessage="Setor é obrigatório">
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione um setor" />
+					<f:selectItems value="#{cargoBean.setores}" var="setor"
+						itemValue="#{setor}" itemLabel="#{setor.nome}" />
 				</p:selectOneMenu>
 			</h:panelGrid>
+
 			<h:panelGrid columns="2">
-				<p:commandButton value="Salvar" />
-				<p:commandButton value="Fechar" oncomplete="PF('dialogoCargo').hide()" />
+				<p:commandButton value="Salvar" actionListener="#{cargoBean.salvar}"
+					update=":mensagem :formCadastroCargo:painelCadastroCargo :formListCargos:tabelaListCargos" />
+				<p:commandButton value="Fechar"
+					oncomplete="PF('dialogoCargo').hide()" />
 			</h:panelGrid>
 		</h:form>
 

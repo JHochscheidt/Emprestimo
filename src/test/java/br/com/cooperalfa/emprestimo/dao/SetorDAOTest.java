@@ -17,29 +17,7 @@ public class SetorDAOTest {
 		SetorDAO setorDAO = new SetorDAO();
 		
 		setor.setNome("administrativo");
-		setorDAO.salvar(setor);
-		
-		setor.setNome("financeiro");
-		setorDAO.salvar(setor);
-		
-		setor.setNome("recursos humanos");
-		setorDAO.salvar(setor);
-		
-		setor.setNome("juridico");
-		setorDAO.salvar(setor);
-		
-		setor.setNome("tecnologia");
-		setorDAO.salvar(setor);
-		
-		setor.setNome("Externo");
-		setorDAO.salvar(setor);
-		
-		setor.setNome("Comercial");
-		setorDAO.salvar(setor);
-		
-		setor.setNome("Operacional");
-		setorDAO.salvar(setor);
-	
+		setorDAO.salvar(setor);	
 	}
 	
 	@Test

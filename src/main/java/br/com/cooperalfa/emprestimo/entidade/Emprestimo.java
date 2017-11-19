@@ -1,35 +1,40 @@
 package br.com.cooperalfa.emprestimo.entidade;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @SuppressWarnings("serial")
 @Entity
-public class Emprestimo extends GenericDomain{
-	
+public class Emprestimo extends GenericDomain {
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Funcionario funcionario;
-	
+
 	@Column(nullable = false, precision = 8, scale = 2)
 	private BigDecimal valor;
-	
+
 	@Column(nullable = false)
 	private int quantidadeParcelas;
-	
+
 	@Column(nullable = false)
-	private Calendar primeiraParcela;
-	
+	@Temporal(TemporalType.DATE)
+	private Date primeiraParcela;
+
 	@Column(nullable = false)
-	private Calendar dataOperacao;
-	
-	
-	
+	@Temporal(TemporalType.DATE)
+	private Date dataOperacao;
+
+	@Column(nullable = false)
+	private String status;
+
 	public Funcionario getFuncionario() {
 		return funcionario;
 	}
@@ -54,24 +59,28 @@ public class Emprestimo extends GenericDomain{
 		this.quantidadeParcelas = quantidadeParcelas;
 	}
 
-	public Calendar getPrimeiraParcela() {
+	public Date getPrimeiraParcela() {
 		return primeiraParcela;
 	}
 
-	public void setPrimeiraParcela(Calendar primeiraParcela) {
+	public void setPrimeiraParcela(Date primeiraParcela) {
 		this.primeiraParcela = primeiraParcela;
 	}
 
-	public Calendar getDataOperacao() {
+	public Date getDataOperacao() {
 		return dataOperacao;
 	}
 
-	public void setDataOperacao(Calendar dataOperacao) {
+	public void setDataOperacao(Date dataOperacao) {
 		this.dataOperacao = dataOperacao;
 	}
 
-	
-	
-	
-	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 }

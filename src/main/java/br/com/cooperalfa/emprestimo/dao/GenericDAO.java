@@ -3,15 +3,16 @@ package br.com.cooperalfa.emprestimo.dao;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 
 import br.com.cooperalfa.emprestimo.util.HibernateUtil;
-
 
 public class GenericDAO<Entidade> {
 	private Class<Entidade> classe;
@@ -59,6 +60,28 @@ public class GenericDAO<Entidade> {
 		}
 	}
 
+	public List<Entidade> listarOrdenado(String campoOrdenacao) {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		try {
+			CriteriaBuilder builder = sessao.getCriteriaBuilder();
+			// Create CriteriaQuery
+			CriteriaQuery<Entidade> consulta = builder.createQuery(classe);
+			// Specify criteria root
+			Root<Entidade> root = consulta.from(classe);
+			consulta.select(root);
+			consulta.orderBy(builder.asc(root.get(campoOrdenacao)));;
+			TypedQuery<Entidade> typedQuery = sessao.createQuery(consulta);
+			
+			// Execute query
+			List<Entidade> resultado = typedQuery.getResultList();
+			return resultado;			
+		} catch (RuntimeException e) {
+			throw e;
+		} finally {
+			sessao.close();
+		}
+	}
+
 	public Entidade buscar(Long codigo) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		Entidade resultado = null;
@@ -71,7 +94,7 @@ public class GenericDAO<Entidade> {
 			sessao.close();
 		}
 	}
-	
+
 	public void excluir(Entidade entidade) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		Transaction transacao = null;
@@ -89,7 +112,7 @@ public class GenericDAO<Entidade> {
 			sessao.close();
 		}
 	}
-	
+
 	public void editar(Entidade entidade) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		Transaction transacao = null;
@@ -107,7 +130,7 @@ public class GenericDAO<Entidade> {
 			sessao.close();
 		}
 	}
-	
+
 	public void merge(Entidade entidade) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		Transaction transacao = null;
@@ -125,5 +148,5 @@ public class GenericDAO<Entidade> {
 			sessao.close();
 		}
 	}
-	
+
 }
