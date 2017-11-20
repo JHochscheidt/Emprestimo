@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+import javax.persistence.PersistenceException;
 
 import org.omnifaces.util.Messages;
 
@@ -75,8 +76,11 @@ public class FuncionarioBean implements Serializable {
 			
 			cargos = new ArrayList<Cargo>();
 			Messages.addGlobalInfo("Funcionário salvo com sucesso");
-		} catch (RuntimeException e) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar salvar novo funcionário!");
+		}catch (PersistenceException e) {
+			Messages.addGlobalError("CPF já existe. Não foi possível salvar funcionário!");
+			e.printStackTrace();
+		}catch(RuntimeException e) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar salvar funcionário!");
 			e.printStackTrace();
 		}
 	}
@@ -93,7 +97,7 @@ public class FuncionarioBean implements Serializable {
 			CargoDAO cargoDAO = new CargoDAO();
 			cargos = cargoDAO.listar();
 
-		} catch (RuntimeException e) {
+		}catch (RuntimeException e) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar selecionar funcionário!");
 			e.printStackTrace();
 		}

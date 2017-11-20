@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui" 
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="topo">
+		<b:navBar brand="Home" brandHref="../pages/funcionarios.xhtml">
+			<b:navbarLinks>
+				<b:navLink value="Setores" href="../pages/setores.xhtml"></b:navLink>
+				<b:navLink value="Cargos" href="../pages/cargos.xhtml"></b:navLink>
+				<b:navLink value="Funcionários" href="../pages/funcionarios.xhtml"></b:navLink>
+				<b:dropMenu value="Empréstimos" iconAwesome="fa-money">
+					<b:navLink value="Empréstimos" href="../pages/emprestimos.xhtml"></b:navLink>
+					<b:navLink value="Ver Parcelas" href="../pages/parcelas.xhtml"></b:navLink>
+					<b:navLink></b:navLink>
+					<b:navLink header="Nav header"></b:navLink>
+					<b:navLink value="Separated link" href="#"></b:navLink>
+					<b:dropMenu value="Nested submenu" iconAwesome="birthday-cake"
+						iconAlign="right">
+						<b:navLink value="You can nest menus" href="#"></b:navLink>
+						<b:dropMenu value="Nested sub-submenu">
+							<b:navLink value="... as deep as ..." href="#"></b:navLink>
+							<b:dropMenu value="Nested sub-sub-submenu">
+								<b:navLink value="... you want!" href="#"></b:navLink>
+							</b:dropMenu>
+						</b:dropMenu>
+
+					</b:dropMenu>
+					<b:navLink value="One more separated link" href="#"></b:navLink>
+				</b:dropMenu>
+			</b:navbarLinks>
+
+			<!-- Following line is needed for TBS 3.0.1 (panel content overflow issue) -->
+			<b:navbarLinks pull="right">
+				<b:navLink value="    " href="#"></b:navLink>
+			</b:navbarLinks>
+			<b:navbarLinks pull="right" styleClass="hidden-xs">
+				<b:navLink value="Link" href="#"></b:navLink>
+				<b:dropMenu value="Dropdown">
+					<b:navLink value="Action" href="#"></b:navLink>
+					<b:navLink value="Another action" href="#"></b:navLink>
+					<b:navLink value="Something else here" href="#"></b:navLink>
+					<b:navLink></b:navLink>
+					<b:navLink header="Nav header"></b:navLink>
+					<b:navLink value="Separated link" href="#"></b:navLink>
+					<b:navLink value="One more separated link" href="#"></b:navLink>
+				</b:dropMenu>
+			</b:navbarLinks>
+		</b:navBar>
+		
+		
+		
+		
+</ui:define>
+</ui:composition>

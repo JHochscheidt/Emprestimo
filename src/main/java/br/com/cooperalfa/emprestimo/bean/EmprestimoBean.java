@@ -72,9 +72,11 @@ public class EmprestimoBean implements Serializable {
 			EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
 			emprestimo.setStatus("ATIVO");
 			emprestimoDAO.merge(emprestimo);
-			
+			// verificar se funcionario ja possui emprestimo ativo
+			// se nao possuir gera as parcelas e salva o emprestimo
+			// se possuir emprestimo ativo, aborta novo emprestimo mostra msg de erro
 			emprestimos = emprestimoDAO.listar();
-//			novo();
+			novo();
 			Messages.addGlobalInfo("Empréstimo salvo com sucesso");
 		} catch (RuntimeException e) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar novo empréstimo!");

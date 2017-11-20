@@ -101,6 +101,15 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- BootFaces -->
+		<dependency>
+			<groupId>net.bootsfaces</groupId>
+			<artifactId>bootsfaces</artifactId>
+			<version>1.1.3</version>
+			<scope>compile</scope>
+		</dependency>
+
+
 
 
 

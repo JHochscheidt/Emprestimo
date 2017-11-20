@@ -1,80 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Setores</title>
-</h:head>
-<h:body>
-	<p:growl id="mensagem" />
-	<h:form id="formListSetores">
-		<p:panel header="Setores - Listagem">
-			<p:dataTable id="tabelaListSetores"
-				emptyMessage="Nenhum registro encontrado." paginator="true"
-				value="#{setorBean.setores}" var="setor" rows="5">
-				<f:facet name="header">
-					<p:commandButton value="Novo"
-						oncomplete="PF('dialogoSetor').show()"
-						actionListener="#{setorBean.novo}"
-						update=":formCadastroSetor:painelCadastroSetor" />
-				</f:facet>
-				<p:column headerText="Código" sortBy="#{setor.codigo}"
-					filterBy="#{setor.codigo}">
-					<h:outputText value="#{setor.codigo}" />
-				</p:column>
-				<p:column headerText="Nome" sortBy="#{setor.nome}"
-					filterBy="#{setor.nome}">
-					<h:outputText value="#{setor.nome}" />
-				</p:column>
-				<p:column headerText="Opções">
-					<p:commandButton icon="ui-icon-trash"
-						actionListener="#{setorBean.excluir}"
-						update=":mensagem :formListSetores:tabelaListSetores">
-						<p:confirm header="Confirmação"
-							message="Deseja excluir setor?" icon="ui-icon-alert"/>
-						<f:attribute name="setorSelecionado" value="#{setor}" />
-					</p:commandButton>
-					<p:commandButton icon="ui-icon-pencil" 
-					actionListener="#{setorBean.editar}" oncomplete="PF('dialogoSetor').show()" 
-					update=":mensagem :formCadastroSetor:painelCadastroSetor">
-						<f:attribute name="setorSelecionado" value="#{setor}" />
-					</p:commandButton>
-				</p:column>
-			</p:dataTable>
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui" template="/templates/navbar.xhtml">
 
-			<p:confirmDialog global="true">
-				<p:commandButton value="Sim" type="button"
-					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-				<p:commandButton value="Não" type="button"
-					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-			</p:confirmDialog>
 
-		</p:panel>
-	</h:form>
+	<ui:define name="conteudo">
 
-	<p:dialog header="Setor - Cadastro" widgetVar="dialogoSetor"
-		draggable="false" resizable="false" modal="true" closable="false">
-		<h:form id="formCadastroSetor">
-			<h:panelGrid columns="2" id="painelCadastroSetor">
-				<p:outputLabel value="Nome" />
-				<p:inputText size="50" maxlength="50"
-					value="#{setorBean.setor.nome}" />
-			</h:panelGrid>
-			<h:panelGrid columns="2">
-				<p:commandButton value="Salvar" actionListener="#{setorBean.salvar}"
-					update=":mensagem :formCadastroSetor:painelCadastroSetor :formListSetores:tabelaListSetores" />
-				<p:commandButton value="Fechar"
-					oncomplete="PF('dialogoSetor').hide()" />
-			</h:panelGrid>
+		
+		<h:form id="formListSetores">
+			<p:panel header="Setores - Listagem">
+				<p:dataTable id="tabelaListSetores"
+					emptyMessage="Nenhum registro encontrado." paginator="true"
+					value="#{setorBean.setores}" var="setor" rows="5">
+					<f:facet name="header">
+						<p:commandButton value="Novo"
+							oncomplete="PF('dialogoSetor').show()"
+							actionListener="#{setorBean.novo}"
+							update=":formCadastroSetor:painelCadastroSetor" />
+					</f:facet>
+					<p:column headerText="Código" sortBy="#{setor.codigo}"
+						filterBy="#{setor.codigo}">
+						<h:outputText value="#{setor.codigo}" />
+					</p:column>
+					<p:column headerText="Nome" sortBy="#{setor.nome}"
+						filterBy="#{setor.nome}">
+						<h:outputText value="#{setor.nome}" />
+					</p:column>
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{setorBean.excluir}"
+							update=":mensagem :formListSetores:tabelaListSetores">
+							<p:confirm header="Confirmação" message="Deseja excluir setor?"
+								icon="ui-icon-alert" />
+							<f:attribute name="setorSelecionado" value="#{setor}" />
+						</p:commandButton>
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{setorBean.editar}"
+							oncomplete="PF('dialogoSetor').show()"
+							update=":mensagem :formCadastroSetor:painelCadastroSetor">
+							<f:attribute name="setorSelecionado" value="#{setor}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+			</p:panel>
 		</h:form>
 
-	</p:dialog>
+		<p:dialog header="Setor - Cadastro" widgetVar="dialogoSetor"
+			draggable="false" resizable="false" modal="true" closable="false">
+			<h:form id="formCadastroSetor">
+				<h:panelGrid columns="2" id="painelCadastroSetor">
+					<p:outputLabel value="Nome" />
+					<p:inputText size="50" maxlength="50"
+						value="#{setorBean.setor.nome}" />
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{setorBean.salvar}"
+						update=":mensagem :formCadastroSetor:painelCadastroSetor :formListSetores:tabelaListSetores" />
+					<p:commandButton value="Fechar"
+						oncomplete="PF('dialogoSetor').hide()" />
+				</h:panelGrid>
+			</h:form>
 
-
-
-
-</h:body>
-</html>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

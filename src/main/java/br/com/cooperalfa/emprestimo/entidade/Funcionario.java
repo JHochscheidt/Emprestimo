@@ -17,7 +17,7 @@ public class Funcionario extends GenericDomain {
 	@Column(nullable = false)
 	private String nome;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String cpf;
 	
 	@ManyToOne
