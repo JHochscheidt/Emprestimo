@@ -32,14 +32,14 @@
 		<property name="show_sql">true</property>
 
 		<!-- Cria as tabelas do banco de dados -->
-		<property name="hbm2ddl.auto">validate</property>
+		<property name="hbm2ddl.auto">update</property>
 
 		<!-- Mapeamento das entidades -->
 		<mapping class="br.com.cooperalfa.emprestimo.entidade.Setor" />
 		<mapping class="br.com.cooperalfa.emprestimo.entidade.Cargo" />
 		<mapping class="br.com.cooperalfa.emprestimo.entidade.Funcionario" />
 		<mapping class="br.com.cooperalfa.emprestimo.entidade.Emprestimo" />
-		<mapping class="br.com.cooperalfa.emprestimo.entidade.Parcela" />
+		<mapping class="br.com.cooperalfa.emprestimo.entidade.Parcela"/>
 
 	</session-factory>
 

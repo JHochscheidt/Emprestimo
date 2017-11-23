@@ -6,17 +6,13 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @SuppressWarnings("serial")
 @Entity
 public class Emprestimo extends GenericDomain {
-
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Funcionario funcionario;
 
 	@Column(nullable = false, precision = 8, scale = 2)
 	private BigDecimal valor;
@@ -34,6 +30,10 @@ public class Emprestimo extends GenericDomain {
 
 	@Column(nullable = false)
 	private String status;
+
+	@OneToOne
+	@JoinColumn(nullable = false)
+	private Funcionario funcionario;
 
 	public Funcionario getFuncionario() {
 		return funcionario;

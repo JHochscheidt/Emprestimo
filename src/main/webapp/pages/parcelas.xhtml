@@ -9,59 +9,37 @@
 
 	<ui:define name="conteudo">
 
-		<h:form id="formListEmprestimos">
-			<p:panel header="Empréstimos - Listagem">
-				<p:dataTable id="tabelaListEmprestimos"
+		<h:form id="formListParcelas">
+			<p:panel header="Parcelas - Listagem">
+				<p:dataTable id="tabelaListparcelas"
 					emptyMessage="Nenhum registro encontrado." paginator="true"
-					value="#{emprestimoBean.emprestimos}" var="emprestimo" rows="5">
-					<f:facet name="header">
-						<p:commandButton value="Novo"
-							actionListener="#{emprestimoBean.novo}"
-							oncomplete="PF('dialogoEmprestimo').show()"
-							update=":mensagem :formCadastroEmprestimo:painelCadastroEmprestimo">
-							<f:actionListener
-								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
-						</p:commandButton>
-					</f:facet>
-					<p:column headerText="Id">
-						<h:outputText value="#{emprestimo.codigo}" />
+					value="#{parcelaBean.parcelas}" var="parcela" rows="5">
+					
+					<p:column headerText="Id Empréstimo">
+						<h:outputText value="#{parcela.cod_emprestimo}" />
 					</p:column>
-					<p:column headerText="Data da Operação">
-						<h:outputText value="#{emprestimo.dataOperacao}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
-						</h:outputText>
+					
+					
+					
+					<p:column headerText="Valor Parcela">
+						<h:outputText value="R$ #{parcela.valorParcela}" />
+					</p:column>
+					
+					<p:column headerText="Valor Pago">
+						<h:outputText value="R$ #{parcela.valorPago}" />
 					</p:column>
 
-					<p:column headerText="Funcionário">
-						<h:outputText value="#{emprestimo.funcionario.nome}"
-							decimalSeparator="," thousandSeparator="." />
+					<p:column headerText="Número Parcela">
+						<h:outputText value="#{parcela.numeroParcela}" />
 					</p:column>
 
-					<p:column headerText="Valor Empréstimo">
-						<h:outputText value="R$ #{emprestimo.valor}" />
-					</p:column>
-
-					<p:column headerText="Quantidade Parcelas">
-						<h:outputText value="#{emprestimo.quantidadeParcelas}" />
-					</p:column>
-
-					<p:column headerText="Data Primeira Parcela">
-						<h:outputText value="#{emprestimo.primeiraParcela}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
-						</h:outputText>
-					</p:column>
-					<p:column headerText="Status">
-						<h:outputText value="#{emprestimo.status}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
-						</h:outputText>
-					</p:column>
-
-
+					
+					
 					<p:column headerText="Opções"></p:column>
 				</p:dataTable>
 			</p:panel>
 		</h:form>
-
+	<!-- 
 		<p:dialog header="Empréstimo - Cadastro" widgetVar="dialogoEmprestimo"
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="formCadastroEmprestimo">
@@ -129,5 +107,6 @@
 			</h:form>
 
 		</p:dialog>
+		 -->
 	</ui:define>
 </ui:composition>
