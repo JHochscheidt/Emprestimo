@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -28,8 +30,11 @@ public class Emprestimo extends GenericDomain {
 	@Temporal(TemporalType.DATE)
 	private Date dataOperacao;
 
-	@Column(nullable = false)
-	private String status;
+	@Column(nullable = false, length = 25)
+	@Enumerated(EnumType.STRING)
+	private Status status;
+	
+//	private List<Parcela> parcelas;
 
 	@OneToOne
 	@JoinColumn(nullable = false)
@@ -74,13 +79,13 @@ public class Emprestimo extends GenericDomain {
 	public void setDataOperacao(Date dataOperacao) {
 		this.dataOperacao = dataOperacao;
 	}
-
-	public String getStatus() {
+	
+	
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
-
 }

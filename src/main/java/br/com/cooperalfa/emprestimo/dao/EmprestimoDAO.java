@@ -10,6 +10,7 @@ import org.hibernate.Session;
 
 import br.com.cooperalfa.emprestimo.entidade.Emprestimo;
 import br.com.cooperalfa.emprestimo.entidade.Funcionario;
+import br.com.cooperalfa.emprestimo.entidade.Status;
 import br.com.cooperalfa.emprestimo.util.HibernateUtil;
 
 public class EmprestimoDAO extends GenericDAO<Emprestimo> {
@@ -21,7 +22,7 @@ public class EmprestimoDAO extends GenericDAO<Emprestimo> {
 		    CriteriaQuery<Emprestimo> query = builder.createQuery(Emprestimo.class);
 		    Root<Emprestimo> u = query.from(Emprestimo.class);
 		    query.select(u);
-		    query.where(builder.equal(u.get("funcionario"), codigoFuncionario), builder.equal(u.get("status"),"ATIVO"));
+		    query.where(builder.equal(u.get("funcionario"), codigoFuncionario), builder.equal(u.get("status"),Status.ATIVO));
 		    
 		    TypedQuery<Emprestimo> typedQuery = sessao.createQuery(query);
 		    Emprestimo emprestimo = typedQuery.getSingleResult();
@@ -33,5 +34,26 @@ public class EmprestimoDAO extends GenericDAO<Emprestimo> {
 		}	
 
 	}
-
+	
+//	public List<Emprestimo> listar() {
+//		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+//		try {
+//			CriteriaBuilder builder = sessao.getCriteriaBuilder();
+//
+//			// Create CriteriaQuery
+//			CriteriaQuery<Emprestimo> consulta = builder.createQuery(Emprestimo.class);
+//			// Specify criteria root
+//			Root<Emprestimo> u = consulta.from(Emprestimo.class);
+//			consulta.select(u);
+//			consulta.where(builder.equal(u.get("status"), Status.values()));
+//			TypedQuery<Emprestimo> typedQuery = sessao.createQuery(consulta);
+//			// Execute query
+//			List<Emprestimo> resultado = typedQuery.getResultList();
+//			return resultado;
+//		} catch (RuntimeException e) {
+//			throw e;
+//		} finally {
+//			sessao.close();
+//		}
+//	}
 }

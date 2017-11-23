@@ -1,6 +1,7 @@
 package br.com.cooperalfa.emprestimo.bean;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import br.com.cooperalfa.emprestimo.dao.ParcelaDAO;
 import br.com.cooperalfa.emprestimo.entidade.Emprestimo;
 import br.com.cooperalfa.emprestimo.entidade.Funcionario;
 import br.com.cooperalfa.emprestimo.entidade.Parcela;
+import br.com.cooperalfa.emprestimo.entidade.Status;
 
 @SuppressWarnings("serial")
 @ManagedBean
@@ -72,7 +74,6 @@ public class EmprestimoBean implements Serializable {
 	public void salvar() {
 		EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
 		try {
-
 			// retorna um emprestimo somente se o funcionario ja possui um emprestimo ativo
 			// se nao houver emprestimos ativos para o funcionario RETORNA UM NoResultException
 			Emprestimo emprestimoFunc = emprestimoDAO.buscarFuncionario(emprestimo.getFuncionario());
@@ -80,43 +81,33 @@ public class EmprestimoBean implements Serializable {
 			// se funcionario nao possui emprestimos ativos
 			if (emprestimoFunc == null) {
 				// --> PODE FAZER NOVO EMPRESTIMO
-				emprestimo.setStatus("ATIVO");
+				emprestimo.setStatus(Status.ATIVO);
+	
 				emprestimoDAO.merge(emprestimo);
-
-				// se teve sucesso ao gravar emprestimo
-				// gera as parcelas
+				
+				emprestimoFunc = emprestimoDAO.buscarFuncionario(emprestimo.getFuncionario());
+//				// se teve sucesso ao gravar emprestimo
+//				// gera as parcelas
 				ParcelaDAO parcelaDAO = new ParcelaDAO();
-				int qtParcelas = emprestimo.getQuantidadeParcelas();
+				int qtParcelas = emprestimoFunc.getQuantidadeParcelas();
 				for (int i = 0; i < qtParcelas; i++) {
+					System.out.println("AQUIIIII\n\n");
 					Parcela parcela = new Parcela();
 					parcela.setNumeroParcela(i + 1);
-					parcela.setValorParcela(emprestimo.getValor());
-					parcela.setValorPago(emprestimo.getValor());
-					parcela.setDataVencimento(emprestimo.getPrimeiraParcela());
-					parcela.setCod_emprestimo(1L);
-					parcelaDAO.salvar(parcela);
+					parcela.setValorParcela(emprestimoFunc.getValor());
+					BigDecimal valorPago = new BigDecimal(0);
+					parcela.setValorPago(valorPago);
+					parcela.setDataVencimento(emprestimoFunc.getPrimeiraParcela());
+					parcela.setEmprestimo(emprestimoFunc);
+					parcelaDAO.merge(parcela);
 					
 				}
+				emprestimos = emprestimoDAO.listar();
+				novo();
+				Messages.addGlobalInfo("Empréstimo salvo com sucesso");
 
 			}
-
-			emprestimos = emprestimoDAO.listar();
-
-			// Date dataOp = new Date();
-			// dataOp.getTime();
-			// BigDecimal valor = new BigDecimal("1000.00");
-			//
-			// Parcela p1 = new Parcela();
-			// p1.setDataVencimento(dataOp);
-			// p1.setNumeroParcela(1);
-			// p1.setValor(valor);
-			// Parcela p2 = new Parcela();
-			// p1.setDataVencimento(dataOp);
-			// p1.setNumeroParcela(2);
-			// p1.setValor(valor);
-
-			novo();
-			Messages.addGlobalInfo("Empréstimo salvo com sucesso");
+			
 		} catch (RuntimeException e) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar novo empréstimo!");
 			e.printStackTrace();

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
@@ -40,6 +41,24 @@ public class ParcelaBean implements Serializable {
 			Messages.addGlobalError("Erro ao tentar exibir empréstimos");
 			e.printStackTrace();
 		}
+	}
+	
+	public void baixar(ActionEvent evento) {
+		try {
+			parcela = (Parcela) evento.getComponent().getAttributes().get("parcelaSelecionada");
+			parcela.setValorPago(parcela.getValorParcela());
+			
+			ParcelaDAO parcelaDAO = new ParcelaDAO();
+			parcelaDAO.merge(parcela);
+
+			parcelas = parcelaDAO.listar();
+
+			Messages.addGlobalInfo("Parcela baixada com sucesso!");
+		} catch (RuntimeException e) {
+			Messages.addGlobalError("Erro ao remover funcionário!");
+			e.printStackTrace();
+		}
+
 	}
 	
 	

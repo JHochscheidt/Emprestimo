@@ -11,12 +11,16 @@
 
 		<h:form id="formListParcelas">
 			<p:panel header="Parcelas - Listagem">
-				<p:dataTable id="tabelaListparcelas"
+				<p:dataTable id="tabelaListParcelas"
 					emptyMessage="Nenhum registro encontrado." paginator="true"
 					value="#{parcelaBean.parcelas}" var="parcela" rows="5">
 					
 					<p:column headerText="Id Empréstimo">
-						<h:outputText value="#{parcela.cod_emprestimo}" />
+						<h:outputText value="#{parcela.emprestimo.codigo}" />
+					</p:column>
+					
+					<p:column headerText="Funcionário">
+						<h:outputText value="#{parcela.emprestimo.funcionario.nome}" />
 					</p:column>
 					
 					
@@ -35,78 +39,19 @@
 
 					
 					
-					<p:column headerText="Opções"></p:column>
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{parcelaBean.baixar}"
+							update=":mensagem :formListParcelas:tabelaListParcelas">
+							<p:confirm header="Confirmação"
+								message="Confirma baixar parcela?" icon="ui-icon-alert" />
+							<f:attribute name="parcelaSelecionada" value="#{parcela}" />
+						</p:commandButton>
+					</p:column>
 				</p:dataTable>
 			</p:panel>
 		</h:form>
-	<!-- 
-		<p:dialog header="Empréstimo - Cadastro" widgetVar="dialogoEmprestimo"
-			draggable="false" resizable="false" modal="true" closable="false">
-			<h:form id="formCadastroEmprestimo">
-				<h:panelGrid id="painelCadastroEmprestimo" columns="2">
-
-					<p:outputLabel for="dataEmprestimo" value="Data da Operação:" />
-					<p:calendar id="dataEmprestimo"
-						value="#{emprestimoBean.emprestimo.dataOperacao}" size="10"
-						locale="pt_BR" pattern="dd/MM/yyyy" mask="99/99/9999"
-						disabled="true" />
-
-					<p:outputLabel for="nomeFuncionarioEmprestimo" value="Funcionário" />
-					<p:selectOneMenu id="nomeFuncionarioEmprestimo" filter="true"
-						value="#{emprestimoBean.emprestimo.funcionario}"
-						converter="omnifaces.SelectItemsConverter" required="true"
-						requiredMessage="Funcionário é obrigatório">
-
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione um funcionário..." />
-						<f:selectItems value="#{emprestimoBean.funcionarios}"
-							var="funcionario" itemValue="#{funcionario}"
-							itemLabel="#{funcionario.nome}" />
-
-					</p:selectOneMenu>
-
-					<p:outputLabel for="valorEmprestimo" value="Valor Empréstimo:" />
-					<p:inputNumber id="valorEmprestimo"
-						value="#{emprestimoBean.emprestimo.valor}" symbol="R$ "
-						decimalSeparator="," thousandSeparator="." maxValue="999999999.99"
-						required="true"
-						requiredMessage="Valor do empréstimo é obrigatório" />
-
-
-					<p:outputLabel for="quantidadeParcelasEmprestimo"
-						value="Quantidade Parcelas" />
-					<p:selectOneMenu id="quantidadeParcelasEmprestimo" filter="true"
-						value="#{emprestimoBean.emprestimo.quantidadeParcelas}"
-						converter="omnifaces.SelectItemsConverter" required="true"
-						requiredMessage="Quantidade de parcelas é obrigatório">
-
-						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione a quantidade de parcelas..." />
-						<f:selectItems value="#{emprestimoBean.quantidadeDeParcelas}"
-							var="quantidadeDeParcelas" itemValue="#{quantidadeDeParcelas}"
-							itemLabel="#{quantidadeDeParcelas}" />
-					</p:selectOneMenu>
-
-
-					<p:outputLabel for="dataPrimeiraParcela"
-						value="Data Primeira Parcela:" />
-					<p:calendar id="dataPrimeiraParcela"
-						value="#{emprestimoBean.emprestimo.primeiraParcela}" size="10"
-						locale="pt_BR" pattern="dd/MM/yyyy" mask="99/99/9999"
-						mindate="#{emprestimoBean.emprestimo.dataOperacao}" />
-
-
-				</h:panelGrid>
-				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
-						actionListener="#{emprestimoBean.salvar}"
-						update=":mensagem :formCadastroEmprestimo:painelCadastroEmprestimo :formListEmprestimos:tabelaListEmprestimos" />
-					<p:commandButton value="Fechar"
-						oncomplete="PF('dialogoEmprestimo').hide()" />
-				</h:panelGrid>
-			</h:form>
-
-		</p:dialog>
-		 -->
+	 
+		
 	</ui:define>
 </ui:composition>

@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -25,11 +27,10 @@ public class Parcela extends GenericDomain {
 	@Column(nullable = false, precision = 8, scale = 2)
 	private BigDecimal valorPago;
 
-	@Column(nullable = false)
-	private Long cod_emprestimo;
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	private Emprestimo emprestimo;
 
-	
-	
 	public Integer getNumeroParcela() {
 		return numeroParcela;
 	}
@@ -62,13 +63,12 @@ public class Parcela extends GenericDomain {
 		this.valorPago = valorPago;
 	}
 
-	public Long getCod_emprestimo() {
-		return cod_emprestimo;
+	public Emprestimo getEmprestimo() {
+		return emprestimo;
 	}
 
-	public void setCod_emprestimo(Long cod_emprestimo) {
-		this.cod_emprestimo = cod_emprestimo;
+	public void setEmprestimo(Emprestimo emprestimo) {
+		this.emprestimo = emprestimo;
 	}
 
-	
 }
