@@ -2,6 +2,7 @@ package br.com.cooperalfa.emprestimo.bean;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -90,13 +91,31 @@ public class EmprestimoBean implements Serializable {
 //				// gera as parcelas
 				ParcelaDAO parcelaDAO = new ParcelaDAO();
 				int qtParcelas = emprestimoFunc.getQuantidadeParcelas();
+				BigDecimal valorParcela = new BigDecimal("0.00");
+				BigDecimal qtParcelasBG = new BigDecimal(emprestimoFunc.getQuantidadeParcelas());
+				valorParcela = emprestimoFunc.getValor().divide(qtParcelasBG,2,RoundingMode.DOWN);
+				System.out.println("valor emp: " + emprestimoFunc.getValor());
+				System.out.println("qt Parcelas: " + qtParcelasBG);
+				System.out.println("valor parcela: " + valorParcela);
+				
+				BigDecimal somaParcelas = new BigDecimal("0.00");			
 				for (int i = 0; i < qtParcelas; i++) {
+					somaParcelas = somaParcelas.add(valorParcela);
+					System.out.println("soma parcelas: " + somaParcelas + " Total: " + emprestimoFunc.getValor());
+					if(i == qtParcelas -1) {
+						if(somaParcelas.compareTo(valorParcela) != 0) {
+							System.out.println("É DIFERENTE");
+							// se a soma das parcelas for menor que o total
+							// adiciona na ultima parcela a diferença entre o valor total e a soma das parcelas
+							valorParcela = valorParcela.add(emprestimoFunc.getValor().subtract(somaParcelas));
+						}
+					}
+									
 					System.out.println("AQUIIIII\n\n");
 					Parcela parcela = new Parcela();
 					parcela.setNumeroParcela(i + 1);
-					parcela.setValorParcela(emprestimoFunc.getValor());
-					BigDecimal valorPago = new BigDecimal(0);
-					parcela.setValorPago(valorPago);
+					parcela.setValorParcela(valorParcela);
+					parcela.setValorPago(new BigDecimal("0.00"));
 					parcela.setDataVencimento(emprestimoFunc.getPrimeiraParcela());
 					parcela.setEmprestimo(emprestimoFunc);
 					parcelaDAO.merge(parcela);
@@ -106,8 +125,10 @@ public class EmprestimoBean implements Serializable {
 				novo();
 				Messages.addGlobalInfo("Empréstimo salvo com sucesso");
 
-			}
-			
+			}else {
+				Messages.addGlobalError("Não foi possível abrir novo empréstimo. Funcionário possui empréstimo pendente!");
+				novo();
+			}			
 		} catch (RuntimeException e) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar novo empréstimo!");
 			e.printStackTrace();

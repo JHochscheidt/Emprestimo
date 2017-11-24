@@ -38,7 +38,7 @@ public class ParcelaBean implements Serializable {
 			ParcelaDAO parcelaDAO = new ParcelaDAO();
 			parcelas = parcelaDAO.listar();
 		} catch (RuntimeException e) {
-			Messages.addGlobalError("Erro ao tentar exibir empréstimos");
+			Messages.addGlobalError("Erro ao tentar exibir parcelas");
 			e.printStackTrace();
 		}
 	}
@@ -55,7 +55,7 @@ public class ParcelaBean implements Serializable {
 
 			Messages.addGlobalInfo("Parcela baixada com sucesso!");
 		} catch (RuntimeException e) {
-			Messages.addGlobalError("Erro ao remover funcionário!");
+			Messages.addGlobalError("Erro ao baixar parcela!");
 			e.printStackTrace();
 		}
 

@@ -1,0 +1,28 @@
+/* INSERT SETORES */
+INSERT INTO `emprestimo`.`setor` (`nome`) 
+VALUES 	('ADMINISTRATIVO'), 	
+		('FINANCEIRO'), 
+		('RECURSOS HUMANOS'), 
+		('COMERCIAL'), 
+        ('JURIDICO');
+        
+/*INSERT CARGOS */
+INSERT INTO `emprestimo`.`cargo` (`nome`, `setor_codigo`)
+VALUES 	('GERENTE',1),
+		('COORDENADOR',1),
+		('DIRETOR',1),
+		('SUPERVISOR',1),
+		('DIRETOR FINANCEIRO',2),
+		('GERENTE DE AUDITORIA',2),
+		('AUDITOR',2),
+		('CONTADOR',2),
+		('DIRETOR DE RECURSOS HUMANOS',3),
+		('GERENTE DE RECURSOS HUMANOS',3),
+		('ANALISTA DE RECURSOS HUMANOS',3),
+		('VENDEDOR',4),
+		('GERENTE COMERCIAL',4),
+		('PROMOTOR DE VENDAS',4),
+		('ANALISTA JURÍDICO',5),
+		('ADVOGADO',5),
+		('ASSESSOR JURÍDICO',5);
+        

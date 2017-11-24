@@ -62,9 +62,10 @@
 			draggable="false" resizable="false" modal="true" closable="false">
 			<h:form id="formCadastroSetor">
 				<h:panelGrid columns="2" id="painelCadastroSetor">
-					<p:outputLabel value="Nome" />
-					<p:inputText size="50" maxlength="50"
-						value="#{setorBean.setor.nome}" />
+					<p:outputLabel for="nomeSetor" value="Nome:" />
+					<p:inputText id="nomeSetor" size="60" maxlength="50"
+						value="#{setorBean.setor.nome}" 
+						required="true" requiredMessage="Nome é obrigatório"/>
 				</h:panelGrid>
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"
