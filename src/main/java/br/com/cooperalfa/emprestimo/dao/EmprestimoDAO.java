@@ -15,7 +15,7 @@ import br.com.cooperalfa.emprestimo.util.HibernateUtil;
 
 public class EmprestimoDAO extends GenericDAO<Emprestimo> {
 
-	public Emprestimo buscarFuncionario(Funcionario codigoFuncionario) {
+	public Emprestimo buscarPorFuncionario(Funcionario codigoFuncionario) {
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
 		try {
 			CriteriaBuilder builder = sessao.getCriteriaBuilder();

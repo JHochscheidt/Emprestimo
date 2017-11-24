@@ -16,8 +16,7 @@
 		<h:form id="formListFuncionarios">
 			<p:panel header="Funcionários - Listagem">
 				<p:dataTable id="tabelaListFuncionarios"
-					emptyMessage="Nenhum registro encontrado." paginator="true"
-					value="#{funcionarioBean.funcionarios}" var="funcionario" rows="5">
+					emptyMessage="Nenhum registro encontrado." paginator="true">
 					<f:facet name="header">
 						<p:commandButton value="Novo"
 							actionListener="#{funcionarioBean.novo}"

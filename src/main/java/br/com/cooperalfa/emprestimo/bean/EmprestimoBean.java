@@ -12,6 +12,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
@@ -31,6 +32,11 @@ public class EmprestimoBean implements Serializable {
 	private List<Emprestimo> emprestimos;
 	private List<Funcionario> funcionarios;
 	private List<Integer> quantidadeDeParcelas = null;
+	
+	private List<Parcela> parcelas;
+	private Parcela parcela;
+	
+	private static final BigDecimal juros = new BigDecimal("0.05");
 
 	public void popular() {
 		if (quantidadeDeParcelas == null) {
@@ -42,6 +48,36 @@ public class EmprestimoBean implements Serializable {
 		}
 	}
 
+	public void exibirParcelas(ActionEvent evento) {
+		try {
+			emprestimo = (Emprestimo) evento.getComponent().getAttributes().get("emprestimoSelecionado");
+			
+			ParcelaDAO parcelaDAO = new ParcelaDAO();
+			parcelas = parcelaDAO.listarParcelas(emprestimo);
+		}catch (RuntimeException e) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar buscar parcelas!");
+			e.printStackTrace();
+		}
+	}
+	
+	public void baixarParcela(ActionEvent evento) {
+		try {
+			parcela = (Parcela) evento.getComponent().getAttributes().get("parcelaSelecionada");
+			
+			ParcelaDAO parcelaDAO = new ParcelaDAO();
+			if(parcela.getValorPago().compareTo(parcela.getValorParcela()) == 0) {
+				Messages.addGlobalInfo("Parcela já foi baixada!");
+			}else {
+				parcela.setValorPago(parcela.getValorParcela());
+				parcelaDAO.merge(parcela);
+				Messages.addGlobalInfo("Parcela baixada!");
+			}
+		}catch(RuntimeException e) {
+			Messages.addGlobalError("Erro ao tentar baixar parcela");
+			e.printStackTrace();
+		}		
+	}
+	
 	public void novo() {
 		try {
 			popular();
@@ -77,7 +113,7 @@ public class EmprestimoBean implements Serializable {
 		try {
 			// retorna um emprestimo somente se o funcionario ja possui um emprestimo ativo
 			// se nao houver emprestimos ativos para o funcionario RETORNA UM NoResultException
-			Emprestimo emprestimoFunc = emprestimoDAO.buscarFuncionario(emprestimo.getFuncionario());
+			Emprestimo emprestimoFunc = emprestimoDAO.buscarPorFuncionario(emprestimo.getFuncionario());
 
 			// se funcionario nao possui emprestimos ativos
 			if (emprestimoFunc == null) {
@@ -86,14 +122,27 @@ public class EmprestimoBean implements Serializable {
 	
 				emprestimoDAO.merge(emprestimo);
 				
-				emprestimoFunc = emprestimoDAO.buscarFuncionario(emprestimo.getFuncionario());
+				// nao tem como retornar mais do que 1 emprestimo
+				// e o emprestimo retornado é o que acabou de ser inserido
+				emprestimoFunc = emprestimoDAO.buscarPorFuncionario(emprestimo.getFuncionario());
 //				// se teve sucesso ao gravar emprestimo
 //				// gera as parcelas
 				ParcelaDAO parcelaDAO = new ParcelaDAO();
 				int qtParcelas = emprestimoFunc.getQuantidadeParcelas();
+				
+				//calcula juros
+				BigDecimal valorEmprestimo = new BigDecimal("0.00");
+				valorEmprestimo = emprestimoFunc.getValor().add(emprestimoFunc.getValor().multiply(EmprestimoBean.getJuros()));
+				System.out.println("antes " + valorEmprestimo);
+				valorEmprestimo = valorEmprestimo.divide(new BigDecimal("1.00"), 2, RoundingMode.UP);
+				System.out.println("depois " + valorEmprestimo);
+				
+				//calcula valor das parcelas
 				BigDecimal valorParcela = new BigDecimal("0.00");
 				BigDecimal qtParcelasBG = new BigDecimal(emprestimoFunc.getQuantidadeParcelas());
-				valorParcela = emprestimoFunc.getValor().divide(qtParcelasBG,2,RoundingMode.DOWN);
+				System.out.println("HEHEHEHEHEH");
+				valorParcela = valorEmprestimo.divide(qtParcelasBG,2,RoundingMode.UP);
+				
 				System.out.println("valor emp: " + emprestimoFunc.getValor());
 				System.out.println("qt Parcelas: " + qtParcelasBG);
 				System.out.println("valor parcela: " + valorParcela);
@@ -101,16 +150,21 @@ public class EmprestimoBean implements Serializable {
 				BigDecimal somaParcelas = new BigDecimal("0.00");			
 				for (int i = 0; i < qtParcelas; i++) {
 					somaParcelas = somaParcelas.add(valorParcela);
-					System.out.println("soma parcelas: " + somaParcelas + " Total: " + emprestimoFunc.getValor());
+					System.out.println("soma parcelas: " + somaParcelas + " Total: " + valorEmprestimo);
+					
+					//se for a ultima parcela e a soma das parcelas for diferente do total do emprestimo
+					//para casos em que a divisao é uma dizima ou valor não exato
 					if(i == qtParcelas -1) {
-						if(somaParcelas.compareTo(valorParcela) != 0) {
+						if(somaParcelas.compareTo(valorEmprestimo) != 0) {
 							System.out.println("É DIFERENTE");
 							// se a soma das parcelas for menor que o total
 							// adiciona na ultima parcela a diferença entre o valor total e a soma das parcelas
-							valorParcela = valorParcela.add(emprestimoFunc.getValor().subtract(somaParcelas));
+							valorParcela = valorParcela.add(valorEmprestimo.subtract(somaParcelas));
 						}
 					}
-									
+					
+					System.out.println();
+					
 					System.out.println("AQUIIIII\n\n");
 					Parcela parcela = new Parcela();
 					parcela.setNumeroParcela(i + 1);
@@ -165,6 +219,26 @@ public class EmprestimoBean implements Serializable {
 
 	public void setQuantidadeDeParcelas(List<Integer> quantidadeDeParcelas) {
 		this.quantidadeDeParcelas = quantidadeDeParcelas;
+	}
+
+	public static BigDecimal getJuros() {
+		return juros;
+	}
+
+	public List<Parcela> getParcelas() {
+		return parcelas;
+	}
+
+	public void setParcelas(List<Parcela> parcelas) {
+		this.parcelas = parcelas;
+	}
+
+	public Parcela getParcela() {
+		return parcela;
+	}
+
+	public void setParcela(Parcela parcela) {
+		this.parcela = parcela;
 	}
 
 }

@@ -13,7 +13,7 @@
 			<p:panel header="Parcelas - Listagem">
 				<p:dataTable id="tabelaListParcelas"
 					emptyMessage="Nenhum registro encontrado." paginator="true"
-					value="#{parcelaBean.parcelas}" var="parcela" rows="5">
+					value="#{parcelaBean.parcelas}" var="parcela" rows="20">
 					
 					<p:column headerText="Id Empréstimo">
 						<h:outputText value="#{parcela.emprestimo.codigo}" />
@@ -23,7 +23,15 @@
 						<h:outputText value="#{parcela.emprestimo.funcionario.nome}" />
 					</p:column>
 					
+					<p:column headerText="Nº Parcela">
+						<h:outputText value="#{parcela.numeroParcela}" />
+					</p:column>
 					
+					<p:column headerText="Vencimento">
+						<h:outputText value="#{parcela.dataVencimento}" >
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
 					
 					<p:column headerText="Valor Parcela">
 						<h:outputText value="R$ #{parcela.valorParcela}" />
@@ -33,14 +41,12 @@
 						<h:outputText value="R$ #{parcela.valorPago}" />
 					</p:column>
 
-					<p:column headerText="Número Parcela">
-						<h:outputText value="#{parcela.numeroParcela}" />
-					</p:column>
+					
 
 					
 					
 					<p:column headerText="Opções">
-						<p:commandButton icon="ui-icon-trash"
+						<p:commandButton value="Baixar"
 							actionListener="#{parcelaBean.baixar}"
 							update=":mensagem :formListParcelas:tabelaListParcelas">
 							<p:confirm header="Confirmação"

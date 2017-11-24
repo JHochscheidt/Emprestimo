@@ -1,0 +1,42 @@
+<p:column headerText="Id Empréstimo">
+						<h:outputText value="#{parcela.emprestimo}" />
+					</p:column>
+					<p:column headerText="Data da Operação">
+						<h:outputText value="#{emprestimo.dataOperacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Funcionário">
+						<h:outputText value="#{emprestimo.funcionario.nome}"
+							decimalSeparator="," thousandSeparator="." />
+					</p:column>
+
+					<p:column headerText="Valor Empréstimo">
+						<h:outputText value="R$ #{emprestimo.valor}" />
+					</p:column>
+
+					<p:column headerText="Quantidade Parcelas">
+						<h:outputText value="#{emprestimo.quantidadeParcelas}" />
+					</p:column>
+
+					<p:column headerText="Data Primeira Parcela">
+						<h:outputText value="#{emprestimo.primeiraParcela}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Status">
+						<h:outputText value="#{emprestimo.status}" />
+					</p:column>
+
+
+					<p:column headerText="Opções">
+						<p:commandButton value="Ver Detalhes"
+							actionListener="#{emprestimoBean.exibirParcelas}"
+							oncomplete="PF('dialogoParcelas').show()"
+							update=":mensagem :formListParcelas:tabelaListParcelas">
+							<f:attribute name="emprestimoSelecionado" value="#{emprestimo}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</p:column>

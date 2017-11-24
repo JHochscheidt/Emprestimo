@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -13,7 +12,7 @@
 			<p:panel header="Empréstimos - Listagem">
 				<p:dataTable id="tabelaListEmprestimos"
 					emptyMessage="Nenhum registro encontrado." paginator="true"
-					value="#{emprestimoBean.emprestimos}" var="emprestimo" rows="5">
+					value="#{emprestimoBean.emprestimos}" var="emprestimo" rows="20">
 					<f:facet name="header">
 						<p:commandButton value="Novo"
 							actionListener="#{emprestimoBean.novo}"
@@ -55,7 +54,16 @@
 					</p:column>
 
 
-					<p:column headerText="Opções"></p:column>
+					<p:column headerText="Opções">
+						<p:commandButton value="Ver Detalhes"
+							actionListener="#{emprestimoBean.exibirParcelas}"
+							oncomplete="PF('dialogoParcelas').show()"
+							update=":mensagem :formListParcelas:tabelaListParcelas">
+							<f:attribute name="emprestimoSelecionado" value="#{emprestimo}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</p:column>
 				</p:dataTable>
 			</p:panel>
 		</h:form>
@@ -118,12 +126,84 @@
 
 				</h:panelGrid>
 				<h:panelGrid columns="2">
-					<p:commandButton value="Salvar"
+					<p:commandButton value="Gerar Parcelas"
 						actionListener="#{emprestimoBean.salvar}"
 						update=":mensagem :formCadastroEmprestimo:painelCadastroEmprestimo :formListEmprestimos:tabelaListEmprestimos" />
 					<p:commandButton value="Fechar"
 						oncomplete="PF('dialogoEmprestimo').hide()" />
 				</h:panelGrid>
+			</h:form>
+
+		</p:dialog>
+		<p:dialog header="Empréstimo - Detalhes Parcelas"
+			widgetVar="dialogoParcelas" draggable="false" resizable="false"
+			modal="true" closable="false">
+			<h:form id="formListParcelas">
+				<p:panel header="Parcelas - Listagem">
+					<p:dataTable id="tabelaListParcelas"
+						emptyMessage="Nenhum registro encontrado." paginator="true"
+						value="#{emprestimoBean.parcelas}" var="parcela" rows="20">
+
+						<f:facet name="header">
+							<p:commandButton value="Fechar"
+								oncomplete="PF('dialogoParcelas').hide()">
+								<f:actionListener
+									type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+							</p:commandButton>
+						</f:facet>
+						
+						<p:column headerText="Id Empréstimo">
+							<h:outputText value="#{parcela.emprestimo.codigo}" />
+						</p:column>
+
+						<p:column headerText="Funcionário">
+							<h:outputText value="#{parcela.emprestimo.funcionario.nome}" />
+						</p:column>
+
+						<p:column headerText="Nº Parcela">
+							<h:outputText value="#{parcela.numeroParcela}" />
+						</p:column>
+
+						<p:column headerText="Vencimento">
+							<h:outputText value="#{parcela.dataVencimento}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Valor Parcela">
+							<h:outputText value="R$ #{parcela.valorParcela}"
+								decimalSeparator="," thousandSeparator="." />
+						</p:column>
+
+						<p:column headerText="Valor Pago">
+							<h:outputText value="R$ #{parcela.valorPago}"
+								decimalSeparator="," thousandSeparator="." />
+						</p:column>
+
+						<p:column headerText="Opções">
+							<p:commandButton value="Baixar"
+								actionListener="#{emprestimoBean.baixarParcela}"
+								update=":mensagem :formListParcelas:tabelaListParcelas">
+								<p:confirm header="Confirmação"
+									message="Confirmar baixar a parcela?" icon="ui-icon-alert" />
+								<f:attribute name="parcelaSelecionada" value="#{parcela}" />
+								<f:actionListener
+									type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+							</p:commandButton>
+						</p:column>
+
+						
+
+
+					</p:dataTable>
+					<p:confirmDialog global="true">
+						<p:commandButton value="Sim" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Não" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:panel>
+
 			</h:form>
 
 		</p:dialog>
