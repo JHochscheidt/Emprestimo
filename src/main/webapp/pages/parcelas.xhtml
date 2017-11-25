@@ -14,50 +14,73 @@
 				<p:dataTable id="tabelaListParcelas"
 					emptyMessage="Nenhum registro encontrado." paginator="true"
 					value="#{parcelaBean.parcelas}" var="parcela" rows="20">
-					
+					<f:facet name="header">
+						<p:outputLabel for="dataInicio" value="Data de vencimento:" />
+						<p:calendar id="dataInicio" value="#{parcelaBean.dataInicio}"
+							required="true"
+							requiredMessage="Selecione a data inicial para busca" size="10"
+							locale="pt_BR" pattern="dd/MM/yyyy" mask="99/99/9999" />
+						<p:outputLabel for="dataFim" value="Até:" />
+						<p:calendar id="dataFim" value="#{parcelaBean.dataFim}"
+							required="true"
+							requiredMessage="Selecione a data final para busca" size="10"
+							locale="pt_BR" pattern="dd/MM/yyyy" mask="99/99/9999" />
+							
+						<p:commandButton value="Buscar"
+						actionListener="#{parcelaBean.listarPorDatas}"
+						update=":mensagem :formListParcelas:tabelaListParcelas " />
+					</f:facet>
+
+
 					<p:column headerText="Id Empréstimo">
 						<h:outputText value="#{parcela.emprestimo.codigo}" />
 					</p:column>
-					
+
 					<p:column headerText="Funcionário">
 						<h:outputText value="#{parcela.emprestimo.funcionario.nome}" />
 					</p:column>
-					
+
 					<p:column headerText="Nº Parcela">
 						<h:outputText value="#{parcela.numeroParcela}" />
 					</p:column>
-					
+
 					<p:column headerText="Vencimento">
-						<h:outputText value="#{parcela.dataVencimento}" >
+						<h:outputText value="#{parcela.dataVencimento}">
 							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</h:outputText>
 					</p:column>
-					
+
 					<p:column headerText="Valor Parcela">
 						<h:outputText value="R$ #{parcela.valorParcela}" />
 					</p:column>
-					
+
 					<p:column headerText="Valor Pago">
 						<h:outputText value="R$ #{parcela.valorPago}" />
 					</p:column>
 
-					
 
-					
-					
+
+
+
 					<p:column headerText="Opções">
 						<p:commandButton value="Baixar"
-							actionListener="#{parcelaBean.baixar}"
+							actionListener="#{emprestimoBean.baixarParcela}"
 							update=":mensagem :formListParcelas:tabelaListParcelas">
 							<p:confirm header="Confirmação"
-								message="Confirma baixar parcela?" icon="ui-icon-alert" />
+								message="Confirmar baixa da parcela?" icon="ui-icon-alert" />
 							<f:attribute name="parcelaSelecionada" value="#{parcela}" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
+				<p:confirmDialog global="true">
+						<p:commandButton value="Sim" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Não" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
 			</p:panel>
 		</h:form>
-	 
-		
+
+
 	</ui:define>
 </ui:composition>

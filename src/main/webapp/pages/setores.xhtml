@@ -8,40 +8,33 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:b="http://bootsfaces.net/ui" template="/templates/navbar.xhtml">
 
-
 	<ui:define name="conteudo">
-
-		
 		<h:form id="formListSetores">
 			<p:panel header="Setores - Listagem">
-				<p:dataTable id="tabelaListSetores"
+				<p:dataTable resizableColumns="true" id="tabelaListSetores"
 					emptyMessage="Nenhum registro encontrado." paginator="true"
-					value="#{setorBean.setores}" var="setor" rows="5">
+					paginatorPosition="top" value="#{setorBean.setores}" var="setor"
+					rows="5">
 					<f:facet name="header">
 						<p:commandButton value="Novo"
 							oncomplete="PF('dialogoSetor').show()"
 							actionListener="#{setorBean.novo}"
 							update=":formCadastroSetor:painelCadastroSetor" />
 					</f:facet>
-					<p:column headerText="Código" sortBy="#{setor.codigo}"
-						filterBy="#{setor.codigo}">
+					<p:column headerText="Código" sortBy="#{setor.codigo}">
 						<h:outputText value="#{setor.codigo}" />
 					</p:column>
-					<p:column headerText="Nome" sortBy="#{setor.nome}"
-						filterBy="#{setor.nome}">
+					<p:column headerText="Nome" sortBy="#{setor.nome}" filterBy="#{setor.nome}">
 						<h:outputText value="#{setor.nome}" />
 					</p:column>
 					<p:column headerText="Opções">
-						<p:commandButton icon="ui-icon-trash"
-							actionListener="#{setorBean.excluir}"
+						<p:commandButton icon="ui-icon-trash" actionListener="#{setorBean.excluir}"
 							update=":mensagem :formListSetores:tabelaListSetores">
-							<p:confirm header="Confirmação" message="Deseja excluir setor?"
-								icon="ui-icon-alert" />
+							<p:confirm header="Confirmação" message="Deseja excluir setor?" icon="ui-icon-alert" />
 							<f:attribute name="setorSelecionado" value="#{setor}" />
 						</p:commandButton>
-						<p:commandButton icon="ui-icon-pencil"
-							actionListener="#{setorBean.editar}"
-							oncomplete="PF('dialogoSetor').show()"
+						<p:commandButton icon="ui-icon-pencil" actionListener="#{setorBean.editar}"
+							oncomplete="PF('dialogoSetor').show()" 
 							update=":mensagem :formCadastroSetor:painelCadastroSetor">
 							<f:attribute name="setorSelecionado" value="#{setor}" />
 						</p:commandButton>
@@ -63,9 +56,9 @@
 			<h:form id="formCadastroSetor">
 				<h:panelGrid columns="2" id="painelCadastroSetor">
 					<p:outputLabel for="nomeSetor" value="Nome:" />
-					<p:inputText id="nomeSetor" size="60" maxlength="50"
-						value="#{setorBean.setor.nome}" 
-						required="true" requiredMessage="Nome é obrigatório"/>
+					<p:inputText id="nomeSetor" size="60" maxlength="50" 
+						value="#{setorBean.setor.nome}" required="true"
+						requiredMessage="Nome é obrigatório" />
 				</h:panelGrid>
 				<h:panelGrid columns="2">
 					<p:commandButton value="Salvar"

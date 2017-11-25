@@ -29,6 +29,9 @@ public class FuncionarioDAO extends GenericDAO<Funcionario>{
 		} finally {
 			sessao.close();
 		}
-
 	}
+	
+	
+	
+	
 }

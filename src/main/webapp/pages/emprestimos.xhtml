@@ -7,12 +7,12 @@
 	template="/templates/navbar.xhtml">
 
 	<ui:define name="conteudo">
-
 		<h:form id="formListEmprestimos">
 			<p:panel header="Empréstimos - Listagem">
 				<p:dataTable id="tabelaListEmprestimos"
 					emptyMessage="Nenhum registro encontrado." paginator="true"
-					value="#{emprestimoBean.emprestimos}" var="emprestimo" rows="20">
+					paginatorPosition="top" value="#{emprestimoBean.emprestimos}"
+					var="emprestimo" rows="8">
 					<f:facet name="header">
 						<p:commandButton value="Novo"
 							actionListener="#{emprestimoBean.novo}"
@@ -32,8 +32,7 @@
 					</p:column>
 
 					<p:column headerText="Funcionário">
-						<h:outputText value="#{emprestimo.funcionario.nome}"
-							decimalSeparator="," thousandSeparator="." />
+						<h:outputText value="#{emprestimo.funcionario.nome}" />
 					</p:column>
 
 					<p:column headerText="Valor Empréstimo">
@@ -96,8 +95,8 @@
 					<p:outputLabel for="valorEmprestimo" value="Valor Empréstimo:" />
 					<p:inputNumber id="valorEmprestimo"
 						value="#{emprestimoBean.emprestimo.valor}" symbol="R$ "
-						decimalSeparator="," thousandSeparator="." maxValue="999999999.99"
-						required="true"
+						decimalSeparator="," thousandSeparator="." maxValue="999999.99"
+						minValue="1.00" required="true"
 						requiredMessage="Valor do empréstimo é obrigatório" />
 
 
@@ -116,12 +115,14 @@
 					</p:selectOneMenu>
 
 
-					<p:outputLabel for="dataPrimeiraParcela"
+					<p:outputLabel for="dataPrimeiraParcela:"
 						value="Data Primeira Parcela:" />
 					<p:calendar id="dataPrimeiraParcela"
 						value="#{emprestimoBean.emprestimo.primeiraParcela}" size="10"
 						locale="pt_BR" pattern="dd/MM/yyyy" mask="99/99/9999"
-						mindate="#{emprestimoBean.emprestimo.dataOperacao}" />
+						mindate="#{emprestimoBean.emprestimo.dataOperacao}"
+						required="true"
+						requiredMessage="Data primeira parcela é obrigatório" />
 
 
 				</h:panelGrid>
@@ -137,12 +138,13 @@
 		</p:dialog>
 		<p:dialog header="Empréstimo - Detalhes Parcelas"
 			widgetVar="dialogoParcelas" draggable="false" resizable="false"
-			modal="true" closable="false">
+			modal="false" closable="false">
 			<h:form id="formListParcelas">
 				<p:panel header="Parcelas - Listagem">
 					<p:dataTable id="tabelaListParcelas"
 						emptyMessage="Nenhum registro encontrado." paginator="true"
-						value="#{emprestimoBean.parcelas}" var="parcela" rows="20">
+						paginatorPosition="top" value="#{emprestimoBean.parcelas}"
+						var="parcela" rows="10">
 
 						<f:facet name="header">
 							<p:commandButton value="Fechar"
@@ -151,7 +153,7 @@
 									type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 							</p:commandButton>
 						</f:facet>
-						
+
 						<p:column headerText="Id Empréstimo">
 							<h:outputText value="#{parcela.emprestimo.codigo}" />
 						</p:column>
@@ -171,28 +173,26 @@
 						</p:column>
 
 						<p:column headerText="Valor Parcela">
-							<h:outputText value="R$ #{parcela.valorParcela}"
-								decimalSeparator="," thousandSeparator="." />
+							<h:outputText value="R$ #{parcela.valorParcela}" />
 						</p:column>
 
 						<p:column headerText="Valor Pago">
-							<h:outputText value="R$ #{parcela.valorPago}"
-								decimalSeparator="," thousandSeparator="." />
+							<h:outputText value="R$ #{parcela.valorPago}" />
 						</p:column>
 
 						<p:column headerText="Opções">
 							<p:commandButton value="Baixar"
 								actionListener="#{emprestimoBean.baixarParcela}"
-								update=":mensagem :formListParcelas:tabelaListParcelas">
+								update=":mensagem :formListParcelas:tabelaListParcelas :formListEmprestimos:tabelaListEmprestimos">
 								<p:confirm header="Confirmação"
-									message="Confirmar baixar a parcela?" icon="ui-icon-alert" />
+									message="Confirmar baixa da parcela?" icon="ui-icon-alert" />
 								<f:attribute name="parcelaSelecionada" value="#{parcela}" />
 								<f:actionListener
 									type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 							</p:commandButton>
 						</p:column>
 
-						
+
 
 
 					</p:dataTable>

@@ -12,11 +12,11 @@
 
 	<ui:define name="conteudo">
 		
-
 		<h:form id="formListFuncionarios">
 			<p:panel header="Funcionários - Listagem">
-				<p:dataTable id="tabelaListFuncionarios"
-					emptyMessage="Nenhum registro encontrado." paginator="true">
+				<p:dataTable resizableColumns="true" id="tabelaListFuncionarios"
+					emptyMessage="Nenhum registro encontrado." paginator="true" paginatorPosition="top"
+					value="#{funcionarioBean.funcionarios}" var="funcionario">
 					<f:facet name="header">
 						<p:commandButton value="Novo"
 							actionListener="#{funcionarioBean.novo}"
@@ -27,8 +27,7 @@
 						</p:commandButton>
 					</f:facet>
 
-					<p:column headerText="Id" sortBy="#{funcionario.codigo}"
-						filterBy="#{funcionario.codigo}">
+					<p:column width="5%" headerText="Id" sortBy="#{funcionario.codigo}" >
 						<h:outputText value="#{funcionario.codigo}" />
 					</p:column>
 
@@ -37,29 +36,29 @@
 						<h:outputText value="#{funcionario.nome}" />
 					</p:column>
 
-					<p:column headerText="CPF">
+					<p:column width="10%" headerText="CPF" 
+					sortBy="#{funcionario.cpf}" filterBy="#{funcionario.cpf}">
 						<h:outputText value="#{funcionario.cpf}" />
 					</p:column>
 
-					<p:column headerText="Setor">
+					<p:column headerText="Setor"
+					sortBy="#{funcionario.setor.nome}" filterBy="#{funcionario.setor.nome}">
 						<h:outputText value="#{funcionario.setor.nome}" />
 					</p:column>
 
-					<p:column headerText="Cargo">
+					<p:column headerText="Cargo"
+					sortBy="#{funcionario.cargo.nome}" filterBy="#{funcionario.cargo.nome}">
 						<h:outputText value="#{funcionario.cargo.nome}" />
 					</p:column>
 
-					<p:column headerText="Data Admissão">
+					<p:column width="10%" headerText="Data Admissão">
 						<h:outputText value="#{funcionario.dataAdmissao}">
 							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</h:outputText>
 					</p:column>
 
-					<p:column headerText="Observação">
-						<h:outputText value="#{funcionario.observacao}" />
-					</p:column>
 
-					<p:column headerText="Opções">
+					<p:column width="10%" headerText="Opções">
 						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{funcionarioBean.excluir}"
 							update=":mensagem :formListFuncionarios:tabelaListFuncionarios">
@@ -144,7 +143,7 @@
 
 
 					<p:outputLabel for="observacaoFuncionario" value="Observação:" />
-					<p:inputTextarea id="observacaoFuncionario" rows="5" cols="50" 
+					<p:inputTextarea id="observacaoFuncionario" rows="6" cols="50" maxlength="255"
 						value="#{funcionarioBean.funcionario.observacao}" required="true"
 						requiredMessage="Campo observação é obrigatório" />
 

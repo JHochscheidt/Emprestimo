@@ -15,7 +15,7 @@
 	<h:form id="formListCargos">
 		<p:panel header="Cargos - Listagem">
 			<p:dataTable id="tabelaListCargos"
-				emptyMessage="Nenhum registro encontrado." paginator="true" rows="5"
+				emptyMessage="Nenhum registro encontrado." paginator="true" paginatorPosition="top" rows="5"
 				value="#{cargoBean.cargos}" var="cargo">
 				<f:facet name="header">
 					<p:commandButton value="Novo"
@@ -26,8 +26,7 @@
 					</p:commandButton>
 				</f:facet>
 				
-				<p:column headerText="Código" sortBy="#{cargo.codigo}"
-					filterBy="#{cargo.codigo}">
+				<p:column headerText="Código" sortBy="#{cargo.codigo}">
 					<h:outputText value="#{cargo.codigo}" />
 				</p:column>
 				
@@ -74,8 +73,9 @@
 		<h:form id="formCadastroCargo">
 			<h:panelGrid id="painelCadastroCargo" columns="2">
 				<p:outputLabel for="nomeCargo" value="Nome:" />
-				<p:inputText id="nomeCargo" size="50" maxlength="60" required="true" requiredMessage="Nome é obrigatório"
-					value="#{cargoBean.cargo.nome}" />
+				<p:inputText id="nomeCargo" size="50" maxlength="60" 
+				required="true" requiredMessage="Nome é obrigatório"
+				value="#{cargoBean.cargo.nome}" />
 
 				<p:outputLabel for="nomeSetor" value="Setor:" />
 				<p:selectOneMenu id="nomeSetor" filter="true" value="#{cargoBean.cargo.setor}"

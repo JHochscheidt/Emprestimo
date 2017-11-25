@@ -6,26 +6,16 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:b="http://bootsfaces.net/ui" 
-	template="/templates/modelo.xhtml">
-
+	xmlns:b="http://bootsfaces.net/ui" template="/templates/modelo.xhtml">
 	<ui:define name="topo">
 		<b:navBar brand="Home" brandHref="../pages/funcionarios.xhtml">
 			<b:navbarLinks>
 				<b:navLink value="Setores" href="../pages/setores.xhtml"></b:navLink>
 				<b:navLink value="Cargos" href="../pages/cargos.xhtml"></b:navLink>
 				<b:navLink value="Funcionários" href="../pages/funcionarios.xhtml"></b:navLink>
-				<b:dropMenu value="Financeiro" iconAwesome="fa-money">
-					<b:navLink value="Empréstimos" href="../pages/emprestimos.xhtml"></b:navLink>
-					<b:navLink value="Ver Parcelas" href="../pages/parcelas.xhtml"></b:navLink>
-				</b:dropMenu>
+				<b:navLink value="Empréstimos" href="../pages/emprestimos.xhtml"></b:navLink>
+				<b:navLink value="Parcelas" href="../pages/parcelas.xhtml"></b:navLink>
 			</b:navbarLinks>
-
-			
 		</b:navBar>
-		
-		
-		
-		
-</ui:define>
+	</ui:define>
 </ui:composition>

@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -32,13 +33,14 @@ public class EmprestimoBean implements Serializable {
 	private List<Emprestimo> emprestimos;
 	private List<Funcionario> funcionarios;
 	private List<Integer> quantidadeDeParcelas = null;
-	
+
 	private List<Parcela> parcelas;
 	private Parcela parcela;
-	
+
 	private static final BigDecimal juros = new BigDecimal("0.05");
 
 	public void popular() {
+		System.out.println();
 		if (quantidadeDeParcelas == null) {
 			quantidadeDeParcelas = new ArrayList<Integer>();
 			quantidadeDeParcelas.add(3);
@@ -51,33 +53,43 @@ public class EmprestimoBean implements Serializable {
 	public void exibirParcelas(ActionEvent evento) {
 		try {
 			emprestimo = (Emprestimo) evento.getComponent().getAttributes().get("emprestimoSelecionado");
-			
+
 			ParcelaDAO parcelaDAO = new ParcelaDAO();
 			parcelas = parcelaDAO.listarParcelas(emprestimo);
-		}catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar buscar parcelas!");
 			e.printStackTrace();
 		}
 	}
-	
+
+	// buscar por parcelas ainda nao baixadas
+
 	public void baixarParcela(ActionEvent evento) {
 		try {
 			parcela = (Parcela) evento.getComponent().getAttributes().get("parcelaSelecionada");
-			
+
 			ParcelaDAO parcelaDAO = new ParcelaDAO();
-			if(parcela.getValorPago().compareTo(parcela.getValorParcela()) == 0) {
+			if (parcela.getValorPago().compareTo(parcela.getValorParcela()) == 0) {
 				Messages.addGlobalInfo("Parcela já foi baixada!");
-			}else {
+			} else {
 				parcela.setValorPago(parcela.getValorParcela());
 				parcelaDAO.merge(parcela);
 				Messages.addGlobalInfo("Parcela baixada!");
+				// verificar se depois de baixada a parcela o emprestimo foi quitado
+				if (parcelaDAO.buscarParcelasBaixadas(parcela.getEmprestimo()) == 0) {
+					Emprestimo empUpdate = parcela.getEmprestimo();
+					empUpdate.setStatus(Status.QUITADO);
+					EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+					emprestimoDAO.merge(empUpdate);
+					emprestimos = emprestimoDAO.listar();
+				}
 			}
-		}catch(RuntimeException e) {
+		} catch (RuntimeException e) {
 			Messages.addGlobalError("Erro ao tentar baixar parcela");
 			e.printStackTrace();
-		}		
+		}
 	}
-	
+
 	public void novo() {
 		try {
 			popular();
@@ -112,77 +124,79 @@ public class EmprestimoBean implements Serializable {
 		EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
 		try {
 			// retorna um emprestimo somente se o funcionario ja possui um emprestimo ativo
-			// se nao houver emprestimos ativos para o funcionario RETORNA UM NoResultException
+			// se nao houver emprestimos ativos para o funcionario RETORNA UM
+			// NoResultException
 			Emprestimo emprestimoFunc = emprestimoDAO.buscarPorFuncionario(emprestimo.getFuncionario());
 
 			// se funcionario nao possui emprestimos ativos
 			if (emprestimoFunc == null) {
 				// --> PODE FAZER NOVO EMPRESTIMO
 				emprestimo.setStatus(Status.ATIVO);
-	
 				emprestimoDAO.merge(emprestimo);
-				
-				// nao tem como retornar mais do que 1 emprestimo
+
 				// e o emprestimo retornado é o que acabou de ser inserido
 				emprestimoFunc = emprestimoDAO.buscarPorFuncionario(emprestimo.getFuncionario());
-//				// se teve sucesso ao gravar emprestimo
-//				// gera as parcelas
-				ParcelaDAO parcelaDAO = new ParcelaDAO();
-				int qtParcelas = emprestimoFunc.getQuantidadeParcelas();
-				
-				//calcula juros
+
+				// calcula juros
 				BigDecimal valorEmprestimo = new BigDecimal("0.00");
-				valorEmprestimo = emprestimoFunc.getValor().add(emprestimoFunc.getValor().multiply(EmprestimoBean.getJuros()));
-				System.out.println("antes " + valorEmprestimo);
+				valorEmprestimo = emprestimoFunc.getValor()
+						.add(emprestimoFunc.getValor().multiply(EmprestimoBean.getJuros()));
 				valorEmprestimo = valorEmprestimo.divide(new BigDecimal("1.00"), 2, RoundingMode.UP);
-				System.out.println("depois " + valorEmprestimo);
-				
-				//calcula valor das parcelas
+
+				// calcula valor das parcelas
 				BigDecimal valorParcela = new BigDecimal("0.00");
 				BigDecimal qtParcelasBG = new BigDecimal(emprestimoFunc.getQuantidadeParcelas());
-				System.out.println("HEHEHEHEHEH");
-				valorParcela = valorEmprestimo.divide(qtParcelasBG,2,RoundingMode.UP);
-				
-				System.out.println("valor emp: " + emprestimoFunc.getValor());
-				System.out.println("qt Parcelas: " + qtParcelasBG);
-				System.out.println("valor parcela: " + valorParcela);
-				
-				BigDecimal somaParcelas = new BigDecimal("0.00");			
+				valorParcela = valorEmprestimo.divide(qtParcelasBG, 2, RoundingMode.UP);
+
+				GregorianCalendar calendario = new GregorianCalendar();
+				calendario.setTime(emprestimoFunc.getPrimeiraParcela());
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+				int qtParcelas = emprestimoFunc.getQuantidadeParcelas();
+				BigDecimal somaParcelas = new BigDecimal("0.00");
+
 				for (int i = 0; i < qtParcelas; i++) {
 					somaParcelas = somaParcelas.add(valorParcela);
-					System.out.println("soma parcelas: " + somaParcelas + " Total: " + valorEmprestimo);
-					
-					//se for a ultima parcela e a soma das parcelas for diferente do total do emprestimo
-					//para casos em que a divisao é uma dizima ou valor não exato
-					if(i == qtParcelas -1) {
-						if(somaParcelas.compareTo(valorEmprestimo) != 0) {
-							System.out.println("É DIFERENTE");
-							// se a soma das parcelas for menor que o total
-							// adiciona na ultima parcela a diferença entre o valor total e a soma das parcelas
+
+					//ultima parcela e soma parcelas diferente do total
+					if (i == qtParcelas - 1) {
+						if (somaParcelas.compareTo(valorEmprestimo) != 0) {
+							// add na ultima parcela a diferença
 							valorParcela = valorParcela.add(valorEmprestimo.subtract(somaParcelas));
 						}
 					}
-					
-					System.out.println();
-					
-					System.out.println("AQUIIIII\n\n");
+					ParcelaDAO parcelaDAO = new ParcelaDAO();
 					Parcela parcela = new Parcela();
 					parcela.setNumeroParcela(i + 1);
 					parcela.setValorParcela(valorParcela);
 					parcela.setValorPago(new BigDecimal("0.00"));
-					parcela.setDataVencimento(emprestimoFunc.getPrimeiraParcela());
+					if (i == 0) {
+						parcela.setDataVencimento(emprestimoFunc.getPrimeiraParcela());
+					} else {
+						String dateString = dateFormat.format(calendario.getTime());
+						try {
+							parcela.setDataVencimento(dateFormat.parse(dateString));
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					}
 					parcela.setEmprestimo(emprestimoFunc);
 					parcelaDAO.merge(parcela);
-					
+					if (calendario.get(GregorianCalendar.MONTH) == 11) {
+						// se mes é dezembro
+						calendario.add(GregorianCalendar.YEAR, 1);
+					}
+					calendario.roll(GregorianCalendar.MONTH, 1);
+
 				}
 				emprestimos = emprestimoDAO.listar();
 				novo();
 				Messages.addGlobalInfo("Empréstimo salvo com sucesso");
-
-			}else {
-				Messages.addGlobalError("Não foi possível abrir novo empréstimo. Funcionário possui empréstimo pendente!");
+			} else {
+				Messages.addGlobalError("Não foi possível abrir novo empréstimo. Funcionário "
+						+ emprestimo.getFuncionario().getNome() + " possui empréstimo pendente!");
 				novo();
-			}			
+			}
 		} catch (RuntimeException e) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar novo empréstimo!");
 			e.printStackTrace();

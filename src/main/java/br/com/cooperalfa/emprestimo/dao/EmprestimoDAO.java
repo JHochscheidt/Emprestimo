@@ -29,31 +29,12 @@ public class EmprestimoDAO extends GenericDAO<Emprestimo> {
 		    return emprestimo;
 		}catch (NoResultException e) {
 //			Messages.addGlobalInfo("Funcionário não possui débitos com o setor financeiro!");
-			e.printStackTrace();
+//			e.printStackTrace();
 			return null;
 		}	
 
 	}
 	
-//	public List<Emprestimo> listar() {
-//		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-//		try {
-//			CriteriaBuilder builder = sessao.getCriteriaBuilder();
-//
-//			// Create CriteriaQuery
-//			CriteriaQuery<Emprestimo> consulta = builder.createQuery(Emprestimo.class);
-//			// Specify criteria root
-//			Root<Emprestimo> u = consulta.from(Emprestimo.class);
-//			consulta.select(u);
-//			consulta.where(builder.equal(u.get("status"), Status.values()));
-//			TypedQuery<Emprestimo> typedQuery = sessao.createQuery(consulta);
-//			// Execute query
-//			List<Emprestimo> resultado = typedQuery.getResultList();
-//			return resultado;
-//		} catch (RuntimeException e) {
-//			throw e;
-//		} finally {
-//			sessao.close();
-//		}
-//	}
+	
+	
 }

@@ -34,8 +34,6 @@ public class CargoBean implements Serializable {
 		}
 	}
 
-	
-	
 	public void editar(ActionEvent evento) {
 		try {
 			cargo = (Cargo) evento.getComponent().getAttributes().get("cargoSelecionado");
@@ -44,9 +42,9 @@ public class CargoBean implements Serializable {
 		} catch (RuntimeException e) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar selecionar cargo!");
 			e.printStackTrace();
-		}	
+		}
 	}
-	
+
 	public void excluir(ActionEvent evento) {
 		try {
 			cargo = (Cargo) evento.getComponent().getAttributes().get("cargoSelecionado");
@@ -74,8 +72,8 @@ public class CargoBean implements Serializable {
 			novo();
 			cargos = cargoDAO.listar();
 
-			 SetorDAO setorDAO = new SetorDAO();
-			 setores = setorDAO.listar();
+			SetorDAO setorDAO = new SetorDAO();
+			setores = setorDAO.listar();
 
 			Messages.addGlobalInfo("Cargo salvo com sucesso");
 		} catch (RuntimeException e) {

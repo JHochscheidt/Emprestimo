@@ -77,7 +77,8 @@ public class FuncionarioBean implements Serializable {
 			cargos = new ArrayList<Cargo>();
 			Messages.addGlobalInfo("Funcionário salvo com sucesso");
 		}catch (PersistenceException e) {
-			Messages.addGlobalError("CPF já existe. Não foi possível salvar funcionário!");
+			Messages.addGlobalError("CPF " + funcionario.getCpf() + " já existe. Não foi possível salvar funcionário!");
+			novo();
 			e.printStackTrace();
 		}catch(RuntimeException e) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar funcionário!");
