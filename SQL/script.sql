@@ -7,7 +7,7 @@ CREATE TABLE `emprestimo`.`setor` (
   `codigo` bigint(20) NOT NULL AUTO_INCREMENT,
   `nome` varchar(50) NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoparcelaDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /* CARGO */
 CREATE TABLE `emprestimo`.`cargo` (

@@ -17,13 +17,12 @@
 					<f:facet name="header">
 						<p:outputLabel for="dataInicio" value="Data de vencimento:" />
 						<p:calendar id="dataInicio" value="#{parcelaBean.dataInicio}"
-							required="true"
-							requiredMessage="Selecione a data inicial para busca" size="10"
+							 size="10"
 							locale="pt_BR" pattern="dd/MM/yyyy" mask="99/99/9999" />
+						
 						<p:outputLabel for="dataFim" value="Até:" />
 						<p:calendar id="dataFim" value="#{parcelaBean.dataFim}"
-							required="true"
-							requiredMessage="Selecione a data final para busca" size="10"
+							 size="10"
 							locale="pt_BR" pattern="dd/MM/yyyy" mask="99/99/9999" />
 							
 						<p:commandButton value="Buscar"
